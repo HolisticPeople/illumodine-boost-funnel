@@ -1,0 +1,238 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import bottleLarge from "@/assets/illum-2oz-bottle.png";
+import bottleSmall from "@/assets/illum-05oz-bottle.png";
+
+const Landing = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden py-20 px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/30" />
+        <div className="absolute inset-0" style={{ 
+          background: 'radial-gradient(circle at 50% 50%, hsl(45 95% 60% / 0.1), transparent 50%)',
+        }} />
+        
+        <div className="relative max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent via-accent to-foreground bg-clip-text text-transparent">
+              ILLUMODINE™
+            </h1>
+            <p className="text-2xl md:text-3xl text-accent mb-4">
+              Pure, High-Potency Iodine Supplement
+            </p>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              The most bioavailable iodine supplement on Earth – charged with True Scalar Energy™ for maximum effectiveness
+            </p>
+          </div>
+
+          {/* Product Images */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-300" />
+              <img 
+                src={bottleSmall} 
+                alt="Illumodine 0.5oz bottle" 
+                className="relative w-48 h-auto drop-shadow-2xl"
+              />
+            </div>
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-300" />
+              <img 
+                src={bottleLarge} 
+                alt="Illumodine 2oz bottle" 
+                className="relative w-64 h-auto drop-shadow-2xl"
+              />
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Special Offer Now
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-background via-secondary/20 to-background">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            Why Illumodine™?
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
+            Experience the power of 100% bioactive iodine (I⁻) – the most ancient and powerful antioxidant on Earth
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {benefits.map((benefit, index) => (
+              <Card key={index} className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-[0_0_20px_hsl(45_95%_60%/0.2)]">
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
+                  <p className="text-foreground">{benefit}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="p-8 md:p-12 bg-gradient-to-br from-secondary/50 to-card/50 backdrop-blur-sm border-accent/30">
+            <h3 className="text-3xl font-bold mb-6 text-accent">What Makes Illumodine™ Superior?</h3>
+            <div className="space-y-4 text-foreground/90">
+              <p>
+                <strong className="text-accent">100% Bioactive Iodine (I⁻):</strong> Illumodine™ contains singlet iodine atoms in their most bioavailable form, ensuring maximum absorption and effectiveness.
+              </p>
+              <p>
+                <strong className="text-accent">True Scalar Energy™ Charged:</strong> Through a proprietary process using beyond-quantum science, Illumodine™ is charged with the highest frequency available to humanity, dramatically enhancing its bioavailability and effectiveness.
+              </p>
+              <p>
+                <strong className="text-accent">Extreme Purity:</strong> Made with scalar-charged 200 proof, non-GMO grain alcohol and singlet iodine atoms – nothing else. No additives, no fillers, just pure potency.
+              </p>
+              <p>
+                <strong className="text-accent">Developed by Dr. Gabriel Cousens:</strong> With decades of research and hundreds of patients studied since 2011, Dr. Cousens has perfected this formulation for optimal brain function and whole-body health.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* Science Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-accent">
+            The Science Behind Illumodine™
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50">
+              <h3 className="text-2xl font-bold mb-4 text-accent">Brain Function & Mental Clarity</h3>
+              <p className="text-foreground/90 mb-4">
+                Iodine sufficiency activates mitochondria to produce 18 times more brain cell energy. A healthy brain cell contains up to 5,000 mitochondria, while iodine-deficient cells have only 200-300.
+              </p>
+              <ul className="space-y-2 text-foreground/90">
+                <li>• Up to 13.5 points higher IQ in children of iodine-sufficient mothers</li>
+                <li>• Up to 9 points higher IQ in iodine-sufficient preschool children</li>
+                <li>• Amelioration of depression and anxiety</li>
+                <li>• Enhanced clarity of mind and consciousness</li>
+              </ul>
+            </Card>
+
+            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50">
+              <h3 className="text-2xl font-bold mb-4 text-accent">Cellular Protection & Detoxification</h3>
+              <p className="text-foreground/90 mb-4">
+                Active Iodine (I⁻) absorbs 3,000 times more ionizing radiation than normal tissue, protecting DNA from radiation damage at the cellular membrane level.
+              </p>
+              <ul className="space-y-2 text-foreground/90">
+                <li>• Powerful antioxidant and radioprotection</li>
+                <li>• Eliminates fluoride from the pineal gland</li>
+                <li>• Helps remove mercury, lead, aluminum, and cadmium</li>
+                <li>• Supports DNA repair and healthy apoptosis</li>
+              </ul>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Special Offer Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-primary/20 via-secondary/30 to-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-accent">
+            Limited Time Special Offer
+          </h2>
+          <p className="text-xl text-foreground/90 mb-8">
+            Experience the transformative power of Illumodine™ with our exclusive offers
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)]">
+              <div className="text-accent text-6xl font-bold mb-4">$29</div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Starter Size</h3>
+              <p className="text-lg mb-4 text-accent">0.5 fl oz (15ml) Bottle</p>
+              <p className="text-foreground/80 mb-6">+ FREE Shipping (US Only)</p>
+              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Perfect for trying Illumodine™
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Pure, high-potency formula
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Scalar energy charged
+                </li>
+              </ul>
+            </Card>
+
+            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative">
+              <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold">
+                BEST VALUE
+              </div>
+              <div className="text-accent text-6xl font-bold mb-4">Best Deal</div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Value Pack</h3>
+              <p className="text-lg mb-4 text-accent">2 fl oz (60ml) Bottle</p>
+              <p className="text-foreground/80 mb-6">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
+              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Maximum savings per dose
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Get a FREE 0.5oz bottle
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-accent" />
+                  Longer-lasting supply
+                </li>
+              </ul>
+            </Card>
+          </div>
+
+          <Button 
+            size="lg" 
+            onClick={() => navigate('/checkout')}
+            className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+          >
+            Claim Your Special Offer Now
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-4 border-t border-border/50">
+        <div className="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
+          <p className="mb-2">© 2024 HolisticPeople.com - Manufactured for Dr. Gabriel Cousens</p>
+          <p className="text-xs">
+            These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure or prevent any disease.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+const benefits = [
+  "Powerful antioxidant – 3,000x more effective than normal tissue at absorbing radiation",
+  "Anti-bacterial, anti-viral, anti-fungal, and anti-parasitic properties",
+  "Supports brain function and mental clarity",
+  "Enhances mood and reduces anxiety and depression",
+  "Supports thyroid health and hormone balance",
+  "Promotes detoxification of heavy metals (fluoride, mercury, lead, aluminum)",
+  "Provides cellular and DNA protection",
+  "Supports energy production at the mitochondrial level",
+  "Anti-inflammatory and anti-allergenic benefits",
+  "Helps eliminate mutated cells through healthy apoptosis",
+  "Supports serotonin production for well-being",
+  "Activates and protects the pineal gland",
+];
+
+export default Landing;
