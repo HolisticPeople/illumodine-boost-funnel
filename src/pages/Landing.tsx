@@ -11,53 +11,52 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-4">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/30" />
+      <section className="relative overflow-hidden min-h-[600px] flex items-center">
+        {/* Background with flowing effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-background opacity-90" />
         <div className="absolute inset-0" style={{ 
-          background: 'radial-gradient(circle at 50% 50%, hsl(45 95% 60% / 0.1), transparent 50%)',
+          background: 'radial-gradient(ellipse at 30% 50%, hsl(280 65% 35% / 0.4), transparent 50%), radial-gradient(ellipse at 70% 50%, hsl(45 95% 50% / 0.3), transparent 50%)',
         }} />
         
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent via-accent to-foreground bg-clip-text text-transparent">
-              ILLUMODINE™
-            </h1>
-            <p className="text-2xl md:text-3xl text-accent mb-4">
-              Pure, High-Potency Iodine Supplement
-            </p>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              The most bioavailable iodine supplement on Earth – charged with True Scalar Energy™ for maximum effectiveness
-            </p>
-          </div>
-
-          {/* Product Images */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-300" />
-              <img 
-                src={bottleSmall} 
-                alt="Illumodine 0.5oz bottle" 
-                className="relative w-48 h-auto drop-shadow-2xl"
-              />
+        {/* Animated flowing lines effect */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/20 via-transparent to-accent/20 animate-pulse" style={{ animationDuration: '4s' }} />
+        </div>
+        
+        <div className="relative w-full max-w-7xl mx-auto px-4 py-16">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left: Text Content */}
+            <div className="text-left space-y-6">
+              <h1 className="text-5xl md:text-7xl font-bold text-accent drop-shadow-[0_0_30px_hsl(45_95%_60%/0.5)]">
+                Illumodine™
+              </h1>
+              <p className="text-3xl md:text-4xl font-semibold text-accent/90">
+                The best Iodine in the world!
+              </p>
+              <p className="text-xl md:text-2xl text-foreground/90">
+                Pure, High-Potency Iodine Supplement
+              </p>
+              <p className="text-lg text-muted-foreground max-w-xl">
+                The most bioavailable iodine supplement on Earth – charged with True Scalar Energy™ for maximum effectiveness
+              </p>
+              <Button 
+                size="lg" 
+                onClick={() => navigate('/checkout')}
+                className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300 mt-8"
+              >
+                Get Your Special Offer Now
+              </Button>
             </div>
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-300" />
+
+            {/* Right: Large Bottle Image */}
+            <div className="relative flex justify-center items-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-primary/30 to-accent/20 rounded-full blur-3xl scale-75" />
               <img 
                 src={bottleLarge} 
                 alt="Illumodine 2oz bottle" 
-                className="relative w-64 h-auto drop-shadow-2xl"
+                className="relative w-full max-w-md h-auto drop-shadow-[0_0_40px_hsl(45_95%_60%/0.6)]"
               />
             </div>
-          </div>
-
-          <div className="text-center">
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/checkout')}
-              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
-            >
-              Get Your Special Offer Now
-            </Button>
           </div>
         </div>
       </section>
@@ -176,9 +175,25 @@ const Landing = () => {
               <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold">
                 BEST VALUE
               </div>
-              <div className="text-accent text-6xl font-bold mb-4">Best Deal</div>
+              <div className="text-accent text-6xl font-bold mb-4">$114</div>
               <h3 className="text-2xl font-bold mb-4 text-foreground">Value Pack</h3>
-              <p className="text-lg mb-4 text-accent">2 fl oz (60ml) Bottle</p>
+              
+              {/* Show both bottles */}
+              <div className="flex justify-center gap-4 mb-4">
+                <img 
+                  src={bottleLarge} 
+                  alt="Illumodine 2oz bottle" 
+                  className="w-24 h-auto drop-shadow-lg"
+                />
+                <div className="text-3xl font-bold text-accent flex items-center">+</div>
+                <img 
+                  src={bottleSmall} 
+                  alt="Free Illumodine 0.5oz bottle" 
+                  className="w-16 h-auto drop-shadow-lg"
+                />
+              </div>
+              
+              <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
               <p className="text-foreground/80 mb-6">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
               <ul className="text-left space-y-2 mb-6 text-foreground/90">
                 <li className="flex items-center gap-2">
