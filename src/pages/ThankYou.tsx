@@ -17,7 +17,8 @@ const ThankYou = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       const searchParams = new URLSearchParams(location.search);
-      const piId = searchParams.get("payment_intent");
+      // Support both payment_intent (Stripe-style) and pi_id (internal)
+      const piId = searchParams.get("payment_intent") || searchParams.get("pi_id");
       const orderIdParam = searchParams.get("order_id");
       
       // If we have state from local navigation (e.g. direct transition, though less likely now with hosted page),
