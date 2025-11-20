@@ -14,16 +14,15 @@ export const ILLUMODINE_PRODUCTS: Product[] = [
   {
     id: "small",
     name: "Illumodine™ (0.5 fl oz) - Starter Size",
-    sku: "ILLUMODINE_05OZ",
+    sku: "HG-Illum05",
     image: bottleSmall,
     defaultPrice: 29.00
   },
   {
     id: "large",
     name: "Illumodine™ (2 fl oz) - Value Pack",
-    sku: "ILLUMODINE_VALUE_PACK", // Bundle SKU
+    sku: "HG-Illum2",
     image: bottleLarge,
     defaultPrice: 114.00
   }
 ];
-
