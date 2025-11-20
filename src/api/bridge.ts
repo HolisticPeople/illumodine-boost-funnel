@@ -8,6 +8,8 @@ export interface CartItem {
   product_id?: number; // optional if resolving by SKU
   sku: string;
   qty: number;
+  // When true, Bridge will treat this line as 100% discounted (free bonus item)
+  free_bonus?: boolean;
 }
 
 export interface Address {

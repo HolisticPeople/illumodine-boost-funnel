@@ -47,9 +47,12 @@ const Checkout = () => {
   const getCartItems = useCallback((): CartItem[] => {
     const items: CartItem[] = [];
     if (selectedOffer === "small" && smallProduct) {
+      // Starter size: paid 0.5oz bottle
       items.push({ sku: smallProduct.sku, qty: quantity });
-    } else if (selectedOffer === "large" && largeProduct) {
+    } else if (selectedOffer === "large" && largeProduct && smallProduct) {
+      // Value pack: paid 2oz bottle + FREE 0.5oz bottle per pack
       items.push({ sku: largeProduct.sku, qty: quantity });
+      items.push({ sku: smallProduct.sku, qty: quantity, free_bonus: true });
     }
     return items;
   }, [selectedOffer, quantity, smallProduct, largeProduct]);
