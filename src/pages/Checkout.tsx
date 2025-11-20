@@ -191,9 +191,11 @@ const Checkout = () => {
 
         // Redirect to hosted payment page
         if (res.client_secret) {
-            // Ensure we always have exactly one slash between base and route
             const base = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
-            const returnUrl = new URL("thank-you", `${window.location.origin}${base}`).toString();
+            const url = new URL(`${window.location.origin}${base}`);
+            // Indicate to the SPA that we should show the thank-you experience
+            url.searchParams.set("go", "thankyou");
+            const returnUrl = url.toString();
 
             const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
             console.log("Redirecting to:", redirectUrl); // Debugging
