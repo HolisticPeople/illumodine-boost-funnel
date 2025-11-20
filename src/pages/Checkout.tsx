@@ -119,10 +119,10 @@ const Checkout = () => {
     fetchTotals();
   }, [selectedOffer, quantity]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Trigger rate fetch when address changes (debounced could be better but simple for now)
+  // Trigger totals refresh when address changes (debounced)
   useEffect(() => {
-      if (formData.address && formData.city && formData.state && formData.zipCode && formData.country.length === 2) {
-          const timer = setTimeout(() => fetchTotals(), 800);
+      if (formData.address && formData.city && formData.state && formData.zipCode && formData.country.length >= 2) {
+          const timer = setTimeout(() => fetchTotals(), 500);
           return () => clearTimeout(timer);
       }
   }, [formData.address, formData.city, formData.state, formData.zipCode, formData.country]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -394,8 +394,11 @@ const Checkout = () => {
                 <div className="flex justify-between text-foreground">
                   <span>Shipping</span>
                   <span className="font-semibold text-accent">
-                    {isCalculating ? <Loader2 className="h-3 w-3 animate-spin inline" /> : 
-                     (totals?.shipping_total ? `$${totals.shipping_total.toFixed(2)}` : "Calculated at checkout")}
+                    {isCalculating ? (
+                      <Loader2 className="h-3 w-3 animate-spin inline" />
+                    ) : (
+                      (formData.country?.toUpperCase() === 'US' ? 'FREE' : (totals?.shipping_total ? `$${totals.shipping_total.toFixed(2)}` : 'Calculated at checkout'))
+                    )}
                   </span>
                 </div>
                 
