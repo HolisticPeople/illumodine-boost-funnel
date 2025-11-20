@@ -12,10 +12,22 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("small");
   const [quantity, setQuantity] = useState(1);
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "United States"
+  });
 
   // Pricing logic
   const smallBottlePrice = 29;
-  const largeBottlePrice = 89; // Example price for 2oz bottle
+  const largeBottlePrice = 114; // Value Pack price
 
   const calculateTotal = () => {
     if (selectedOffer === "small") {
@@ -35,6 +47,34 @@ const Checkout = () => {
   const handleQuantityChange = (delta: number) => {
     const newQuantity = Math.max(1, quantity + delta);
     setQuantity(newQuantity);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const orderData = {
+      packageType: selectedOffer,
+      quantity,
+      totalPrice: calculateTotal(),
+      shippingInfo: {
+        fullName: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        country: formData.country
+      }
+    };
+
+    navigate('/thank-you', { state: { orderData } });
   };
 
   return (
@@ -198,52 +238,100 @@ const Checkout = () => {
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50">
               <h3 className="text-xl font-bold mb-6 text-accent">Shipping Information</h3>
               
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName" className="text-foreground">First Name</Label>
-                    <Input id="firstName" className="bg-input border-border/50 text-foreground" />
+                    <Input 
+                      id="firstName" 
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
-                    <Input id="lastName" className="bg-input border-border/50 text-foreground" />
+                    <Input 
+                      id="lastName" 
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                 </div>
                 
                 <div>
                   <Label htmlFor="email" className="text-foreground">Email</Label>
-                  <Input id="email" type="email" className="bg-input border-border/50 text-foreground" />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-input border-border/50 text-foreground" 
+                  />
                 </div>
                 
                 <div>
                   <Label htmlFor="address" className="text-foreground">Address</Label>
-                  <Input id="address" className="bg-input border-border/50 text-foreground" />
+                  <Input 
+                    id="address" 
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-input border-border/50 text-foreground" 
+                  />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="city" className="text-foreground">City</Label>
-                    <Input id="city" className="bg-input border-border/50 text-foreground" />
+                    <Input 
+                      id="city" 
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="state" className="text-foreground">State</Label>
-                    <Input id="state" className="bg-input border-border/50 text-foreground" />
+                    <Input 
+                      id="state" 
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="zip" className="text-foreground">ZIP Code</Label>
-                    <Input id="zip" className="bg-input border-border/50 text-foreground" />
+                    <Label htmlFor="zipCode" className="text-foreground">ZIP Code</Label>
+                    <Input 
+                      id="zipCode" 
+                      value={formData.zipCode}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="country" className="text-foreground">Country</Label>
-                    <Input id="country" defaultValue="United States" className="bg-input border-border/50 text-foreground" />
+                    <Input 
+                      id="country" 
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      className="bg-input border-border/50 text-foreground" 
+                    />
                   </div>
                 </div>
 
                 <Button 
-                  type="button"
+                  type="submit"
                   size="lg" 
                   className="w-full bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-lg py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
                 >
