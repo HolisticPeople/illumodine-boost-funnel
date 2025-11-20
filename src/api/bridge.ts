@@ -149,22 +149,19 @@ export const bridge = {
   },
 
   buildHostedConfirmUrl(clientSecret: string, returnUrl: string, publishableKey?: string) {
-    // Use the WordPress hosted page to avoid inline JS issues and provide a clean environment
-    // We pass the client_secret and the final success URL (this SPA's thank-you page)
-    // The hosted page will handle the Stripe.js loading and confirmation
-    const wpBase = APP_API_BASE.replace('/wp-json/hp-funnel/v1', '');
-    const confirmUrl = new URL(`${wpBase}/hp-funnel-confirm`);
-    confirmUrl.searchParams.set('cs', clientSecret);
-    
-    // The success URL should be our SPA's thank you page
-    // We encode it because it's a parameter inside a parameter
-    confirmUrl.searchParams.set('succ', returnUrl);
-    
+    // Match fastingkit behavior: use query-param based endpoint to avoid rewrite dependence.
+    // Base WP URL (no /wp-json/hp-funnel/v1 suffix)
+    const wpBase = APP_API_BASE.replace(/\/wp-json\/hp-funnel\/v1\/?$/, "");
+    const u = new URL(wpBase.endsWith("/") ? wpBase : `${wpBase}/`);
+    u.searchParams.set("hp_fb_confirm", "1");
+    u.searchParams.set("cs", clientSecret);
     if (publishableKey) {
-        confirmUrl.searchParams.set('pk', publishableKey);
+      u.searchParams.set("pk", publishableKey);
     }
-    
-    return confirmUrl.toString();
+    if (returnUrl) {
+      u.searchParams.set("succ", encodeURIComponent(returnUrl));
+    }
+    return u.toString();
   }
 };
 
