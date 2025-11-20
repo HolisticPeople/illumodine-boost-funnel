@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Minus, Plus, Package, ShieldCheck, Truck } from "lucide-react";
+import { Minus, Plus, Package, ShieldCheck, Truck, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
 import logo from "@/assets/holisticpeople-logo.png";
+import { usePrices } from "@/context/PricesContext";
+import { ILLUMODINE_PRODUCTS } from "@/data/products";
+import { bridge, ShippingRate, TotalsResponse, CartItem } from "@/api/bridge";
+import { useToast } from "@/components/ui/use-toast";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { getPrice, loading: pricesLoading } = usePrices();
+  
   const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("small");
   const [quantity, setQuantity] = useState(1);
   
@@ -23,27 +30,85 @@ const Checkout = () => {
     city: "",
     state: "",
     zipCode: "",
-    country: "United States"
+    country: "US" // Default to US code
   });
 
-  // Pricing logic
-  const smallBottlePrice = 29;
-  const largeBottlePrice = 114; // Value Pack price
+  // Checkout state
+  const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
+  const [selectedRate, setSelectedRate] = useState<ShippingRate | undefined>(undefined);
+  const [totals, setTotals] = useState<TotalsResponse | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const calculateTotal = () => {
-    if (selectedOffer === "small") {
-      return smallBottlePrice * quantity;
-    } else {
-      return largeBottlePrice * quantity;
-    }
-  };
+  // Get Products
+  const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
+  const largeProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "large");
 
-  const calculateFreeBottles = () => {
-    if (selectedOffer === "large") {
-      return quantity; // 1 free small bottle per large bottle
+  const getCartItems = useCallback((): CartItem[] => {
+    const items: CartItem[] = [];
+    if (selectedOffer === "small" && smallProduct) {
+      items.push({ sku: smallProduct.sku, qty: quantity });
+    } else if (selectedOffer === "large" && largeProduct) {
+      items.push({ sku: largeProduct.sku, qty: quantity });
     }
-    return 0;
-  };
+    return items;
+  }, [selectedOffer, quantity, smallProduct, largeProduct]);
+
+  // Calculate Totals
+  const fetchTotals = useCallback(async () => {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    setIsCalculating(true);
+    try {
+      const address = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        address_1: formData.address,
+        city: formData.city,
+        state: formData.state,
+        postcode: formData.zipCode,
+        country: formData.country,
+        email: formData.email
+      };
+
+      // If we have address for shipping, try to get rates first if not present
+      let currentRate = selectedRate;
+      if (!currentRate && formData.zipCode && formData.country && formData.address) {
+         try {
+             const rates = await bridge.calculateShipping(address, items);
+             setShippingRates(rates);
+             if (rates.length > 0) {
+                 currentRate = rates[0];
+                 setSelectedRate(rates[0]);
+             }
+         } catch (e) {
+             console.warn("Shipping fetch failed", e);
+         }
+      }
+
+      const res = await bridge.getTotals(address, items, currentRate);
+      setTotals(res);
+    } catch (error) {
+      console.error("Failed to fetch totals", error);
+    } finally {
+      setIsCalculating(false);
+    }
+  }, [formData, getCartItems, selectedRate]);
+
+  // Trigger totals update when cart changes
+  useEffect(() => {
+    fetchTotals();
+  }, [selectedOffer, quantity]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Trigger rate fetch when address changes (debounced could be better but simple for now)
+  useEffect(() => {
+      if (formData.address && formData.city && formData.state && formData.zipCode && formData.country.length === 2) {
+          const timer = setTimeout(() => fetchTotals(), 800);
+          return () => clearTimeout(timer);
+      }
+  }, [formData.address, formData.city, formData.state, formData.zipCode, formData.country]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = Math.max(1, quantity + delta);
@@ -57,26 +122,67 @@ const Checkout = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    const orderData = {
-      packageType: selectedOffer,
-      quantity,
-      totalPrice: calculateTotal(),
-      shippingInfo: {
-        fullName: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country
-      }
-    };
+    try {
+        const items = getCartItems();
+        const address = {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            address_1: formData.address,
+            city: formData.city,
+            state: formData.state,
+            postcode: formData.zipCode,
+            country: formData.country,
+            email: formData.email
+        };
+        
+        const payload = {
+            items,
+            shipping_address: address,
+            customer: {
+                email: formData.email,
+                first_name: formData.firstName,
+                last_name: formData.lastName
+            },
+            selected_rate: selectedRate ? {
+                serviceName: selectedRate.serviceName,
+                amount: selectedRate.shipmentCost + selectedRate.otherCost
+            } : null
+        };
 
-    navigate('/thank-you', { state: { orderData } });
+        const res = await bridge.submitCheckout(payload);
+        
+        // Redirect to hosted payment page
+        if (res.client_secret) {
+            const returnUrl = `${window.location.origin}/thank-you`;
+            const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
+            window.location.href = redirectUrl;
+        }
+
+    } catch (error: any) {
+        console.error("Checkout failed", error);
+        if (error.code === 'funnel_off' && error.redirect) {
+            window.location.href = error.redirect;
+            return;
+        }
+        toast({
+            title: "Error",
+            description: error.message || "Something went wrong. Please try again.",
+            variant: "destructive"
+        });
+        setIsSubmitting(false);
+    }
   };
+
+  // Display prices
+  const priceSmall = getPrice(smallProduct?.sku || "") || 29;
+  const priceLarge = getPrice(largeProduct?.sku || "") || 114;
+  
+  const currentPrice = selectedOffer === "small" ? priceSmall : priceLarge;
+  const displayTotal = totals ? totals.grand_total : (currentPrice * quantity);
 
   return (
     <div className="min-h-screen bg-background py-12 px-4">
@@ -121,7 +227,9 @@ const Checkout = () => {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-foreground mb-1">Starter Size</h3>
                     <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
-                    <p className="text-2xl font-bold text-accent mt-2">${smallBottlePrice}</p>
+                    <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
+                    </p>
                     <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
                 </div>
@@ -148,7 +256,9 @@ const Checkout = () => {
                     <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
                     <p className="text-accent font-semibold">2 fl oz (60ml)</p>
                     <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
-                    <p className="text-2xl font-bold text-accent mt-2">${largeBottlePrice}</p>
+                    <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
+                    </p>
                     <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
                 </div>
@@ -182,7 +292,7 @@ const Checkout = () => {
                 <div className="mt-4 p-4 bg-accent/10 rounded-lg border border-accent/30">
                   <p className="text-accent font-semibold flex items-center gap-2">
                     <Package className="w-5 h-5" />
-                    You'll receive {calculateFreeBottles()} FREE 0.5oz bottle{calculateFreeBottles() > 1 ? 's' : ''}!
+                    You'll receive {quantity} FREE 0.5oz bottle{quantity > 1 ? 's' : ''}!
                   </p>
                 </div>
               )}
@@ -216,24 +326,44 @@ const Checkout = () => {
                   <span>
                     {selectedOffer === "small" ? "0.5oz Bottle" : "2oz Bottle"} × {quantity}
                   </span>
-                  <span className="font-semibold">${calculateTotal()}</span>
+                  <span className="font-semibold">
+                    ${(currentPrice * quantity).toFixed(2)}
+                  </span>
                 </div>
                 
-                {calculateFreeBottles() > 0 && (
+                {selectedOffer === "large" && (
                   <div className="flex justify-between text-accent">
-                    <span>FREE 0.5oz Bottle × {calculateFreeBottles()}</span>
+                    <span>FREE 0.5oz Bottle × {quantity}</span>
                     <span className="font-semibold">$0</span>
                   </div>
                 )}
                 
+                {totals?.discount_total > 0 && (
+                    <div className="flex justify-between text-green-500">
+                        <span>Discount</span>
+                        <span>-${totals.discount_total.toFixed(2)}</span>
+                    </div>
+                )}
+                {totals?.global_discount > 0 && (
+                    <div className="flex justify-between text-green-500">
+                        <span>Global Discount</span>
+                        <span>-${totals.global_discount.toFixed(2)}</span>
+                    </div>
+                )}
+
                 <div className="flex justify-between text-foreground">
-                  <span>Shipping (US)</span>
-                  <span className="font-semibold text-accent">FREE</span>
+                  <span>Shipping</span>
+                  <span className="font-semibold text-accent">
+                    {isCalculating ? <Loader2 className="h-3 w-3 animate-spin inline" /> : 
+                     (totals?.shipping_total ? `$${totals.shipping_total.toFixed(2)}` : "Calculated at checkout")}
+                  </span>
                 </div>
                 
                 <div className="pt-3 border-t border-accent/30 flex justify-between text-xl font-bold">
                   <span className="text-accent">Total:</span>
-                  <span className="text-accent">${calculateTotal()}</span>
+                  <span className="text-accent">
+                    {isCalculating ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${displayTotal.toFixed(2)}`}
+                  </span>
                 </div>
               </div>
 
@@ -328,12 +458,14 @@ const Checkout = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="country" className="text-foreground">Country</Label>
+                    <Label htmlFor="country" className="text-foreground">Country Code (e.g. US)</Label>
                     <Input 
                       id="country" 
                       value={formData.country}
                       onChange={handleInputChange}
                       className="bg-input border-border/50 text-foreground" 
+                      maxLength={2}
+                      required
                     />
                   </div>
                 </div>
@@ -341,9 +473,11 @@ const Checkout = () => {
                 <Button 
                   type="submit"
                   size="lg" 
+                  disabled={isSubmitting || isCalculating}
                   className="w-full bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-lg py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
                 >
-                  Complete Your Order
+                  {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  {isSubmitting ? "Processing..." : "Complete Your Order"}
                 </Button>
               </form>
 
