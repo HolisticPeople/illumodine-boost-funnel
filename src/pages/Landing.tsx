@@ -179,17 +179,17 @@ const Landing = () => {
               <h3 className="text-2xl font-bold mb-4 text-foreground">Value Pack</h3>
               
               {/* Show both bottles */}
-              <div className="flex justify-center gap-4 mb-4">
+              <div className="flex justify-center items-end gap-4 mb-4">
                 <img 
                   src={bottleLarge} 
                   alt="Illumodine 2oz bottle" 
-                  className="w-24 h-auto drop-shadow-lg"
+                  className="h-32 w-auto drop-shadow-lg"
                 />
-                <div className="text-3xl font-bold text-accent flex items-center">+</div>
+                <div className="text-3xl font-bold text-accent flex items-center pb-4">+</div>
                 <img 
                   src={bottleSmall} 
                   alt="Free Illumodine 0.5oz bottle" 
-                  className="w-16 h-auto drop-shadow-lg"
+                  className="h-20 w-auto drop-shadow-lg"
                 />
               </div>
               
