@@ -7,6 +7,7 @@ import { Minus, Plus, Package, ShieldCheck, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
+import logo from "@/assets/holisticpeople-logo.png";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -80,6 +81,13 @@ const Checkout = () => {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-6xl mx-auto">
+        {/* Logo */}
+        <div className="mb-8">
+          <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
+            <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
+          </a>
+        </div>
+        
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-accent via-accent to-foreground bg-clip-text text-transparent">

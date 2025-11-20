@@ -4,12 +4,20 @@ import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
+import logo from "@/assets/holisticpeople-logo.png";
 
 const Landing = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Logo */}
+      <div className="absolute top-6 left-6 z-10">
+        <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
+          <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
+        </a>
+      </div>
+      
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[600px] flex items-center">
         {/* Background with flowing effect */}

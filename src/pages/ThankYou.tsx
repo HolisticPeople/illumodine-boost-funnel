@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import logo from "@/assets/holisticpeople-logo.png";
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -17,6 +18,13 @@ const ThankYou = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      {/* Logo */}
+      <div className="container mx-auto px-4 pt-6">
+        <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
+          <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
+        </a>
+      </div>
+      
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
           {/* Success Message */}
@@ -93,8 +101,8 @@ const ThankYou = () => {
             </p>
             <p className="text-sm text-muted-foreground">
               If you have any questions about your order, please contact us at{" "}
-              <a href="mailto:support@holisticpeople.com" className="text-primary hover:underline">
-                support@holisticpeople.com
+              <a href="mailto:contact@holisticpeople.com" className="text-primary hover:underline">
+                contact@holisticpeople.com
               </a>
             </p>
           </Card>
