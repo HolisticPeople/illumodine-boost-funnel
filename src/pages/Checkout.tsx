@@ -74,7 +74,25 @@ const Checkout = () => {
 
       // If we have address for shipping, try to get rates first if not present
       let currentRate = selectedRate;
-      if (!currentRate && formData.zipCode && formData.country && formData.address) {
+      // Free shipping for US
+      const countryUpper = formData.country ? formData.country.toUpperCase() : '';
+      const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
+      
+      if (isUS) {
+          // Mock free shipping rate
+          const freeRate: ShippingRate = {
+              serviceCode: 'free_us',
+              serviceName: 'Free US Shipping',
+              shipmentCost: 0,
+              otherCost: 0
+          };
+          // Always ensure we use the free rate for US
+          if (!currentRate || currentRate.serviceCode !== 'free_us') {
+              currentRate = freeRate;
+              setSelectedRate(freeRate);
+              setShippingRates([freeRate]);
+          }
+      } else if (!currentRate && formData.zipCode && formData.country && formData.address) {
          try {
              const rates = await bridge.calculateShipping(address, items);
              setShippingRates(rates);
@@ -139,6 +157,20 @@ const Checkout = () => {
             email: formData.email
         };
         
+        let submitRate = selectedRate;
+        
+        // If no rate selected (e.g. user quick submitted), but it's US, force free shipping
+        const countryUpper = formData.country ? formData.country.toUpperCase() : '';
+        const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
+        if (!submitRate && isUS) {
+             submitRate = {
+                serviceCode: 'free_us',
+                serviceName: 'Free US Shipping',
+                shipmentCost: 0,
+                otherCost: 0
+            };
+        }
+
         const payload = {
             items,
             shipping_address: address,
@@ -147,19 +179,27 @@ const Checkout = () => {
                 first_name: formData.firstName,
                 last_name: formData.lastName
             },
-            selected_rate: selectedRate ? {
-                serviceName: selectedRate.serviceName,
-                amount: selectedRate.shipmentCost + selectedRate.otherCost
+            selected_rate: submitRate ? {
+                serviceName: submitRate.serviceName,
+                amount: submitRate.shipmentCost + submitRate.otherCost
             } : null
         };
 
         const res = await bridge.submitCheckout(payload);
         
+        console.log("Checkout response:", res); // Debugging
+
         // Redirect to hosted payment page
         if (res.client_secret) {
-            const returnUrl = `${window.location.origin}/thank-you`;
-            const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
+            const returnUrl = `${window.location.origin}${import.meta.env.BASE_URL}thank-you`;
+            // Remove trailing slash if present to avoid double slashes
+            const cleanReturnUrl = returnUrl.replace(/([^:]\/)\/+/g, "$1");
+            
+            const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, cleanReturnUrl, res.publishable);
+            console.log("Redirecting to:", redirectUrl); // Debugging
             window.location.href = redirectUrl;
+        } else {
+            throw new Error("Invalid response from server: missing client_secret");
         }
 
     } catch (error: any) {
