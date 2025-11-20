@@ -52,7 +52,12 @@ const Checkout = () => {
     } else if (selectedOffer === "large" && largeProduct && smallProduct) {
       // Value pack: paid 2oz bottle + FREE 0.5oz bottle per pack
       items.push({ sku: largeProduct.sku, qty: quantity });
-      items.push({ sku: smallProduct.sku, qty: quantity, free_bonus: true });
+      items.push({
+        sku: smallProduct.sku,
+        qty: quantity,
+        exclude_global_discount: true,
+        item_discount_percent: 100,
+      });
     }
     return items;
   }, [selectedOffer, quantity, smallProduct, largeProduct]);

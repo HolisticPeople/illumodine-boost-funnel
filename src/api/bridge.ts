@@ -8,8 +8,11 @@ export interface CartItem {
   product_id?: number; // optional if resolving by SKU
   sku: string;
   qty: number;
-  // When true, Bridge will treat this line as 100% discounted (free bonus item)
-  free_bonus?: boolean;
+  // Optional per-line overrides, mirroring Bridge / EAO semantics
+  // When true, this line is excluded from any global discount.
+  exclude_global_discount?: boolean;
+  // When set, this specific item discount percent is applied (e.g. 100 for free).
+  item_discount_percent?: number;
 }
 
 export interface Address {
