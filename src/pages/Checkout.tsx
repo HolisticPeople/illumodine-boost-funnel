@@ -477,7 +477,7 @@ const Checkout = () => {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
-                      className="bg-input border-border/50 text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                     />
                   </div>
                   <div>
@@ -487,7 +487,7 @@ const Checkout = () => {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
-                      className="bg-input border-border/50 text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                     />
                   </div>
                 </div>
@@ -500,7 +500,7 @@ const Checkout = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="bg-input border-border/50 text-foreground" 
+                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                   />
                 </div>
                 
@@ -511,7 +511,7 @@ const Checkout = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="bg-input border-border/50 text-foreground" 
+                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                   />
                 </div>
                 
@@ -523,18 +523,20 @@ const Checkout = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className="bg-input border-border/50 text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="state" className="text-foreground">State</Label>
-                    <Input 
-                      id="state" 
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      className="bg-input border-border/50 text-foreground" 
-                    />
-                  </div>
+                  {countryRequiresState(formData.country) && (
+                    <div>
+                      <Label htmlFor="state" className="text-foreground">State</Label>
+                      <Input 
+                        id="state" 
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -545,7 +547,7 @@ const Checkout = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    className="bg-input border-border/50 text-foreground"
+                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                   />
                 </div>
                 
@@ -557,7 +559,7 @@ const Checkout = () => {
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
-                      className="bg-input border-border/50 text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
                     />
                   </div>
                   <div>
@@ -570,7 +572,7 @@ const Checkout = () => {
                           role="combobox"
                           aria-expanded="false"
                           className={cn(
-                            "w-full justify-between bg-input border-border/50 text-foreground hover:bg-input/80",
+                            "w-full justify-between bg-input border-border/50 text-foreground hover:bg-input/80 hover:!text-foreground",
                             countryError ? "border-red-500" : ""
                           )}
                         >
