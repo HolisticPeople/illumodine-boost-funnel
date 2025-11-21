@@ -108,4 +108,17 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Force browser autofill to respect our dark input styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: hsl(var(--foreground));
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--input)) inset;
+    box-shadow: 0 0 0 30px hsl(var(--input)) inset;
+    caret-color: hsl(var(--foreground));
+  }
 }
