@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Minus, Plus, Package, ShieldCheck, Truck, Loader2 } from "lucide-react";
+import { Minus, Plus, Package, ShieldCheck, Truck, Loader2, Check, ChevronsUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
@@ -12,6 +12,10 @@ import { usePrices } from "@/context/PricesContext";
 import { ILLUMODINE_PRODUCTS } from "@/data/products";
 import { bridge, ShippingRate, TotalsResponse, CartItem } from "@/api/bridge";
 import { useToast } from "@/components/ui/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { COUNTRIES, countryNameFor } from "@/data/countries";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -32,6 +36,7 @@ const Checkout = () => {
     zipCode: "",
     country: "US" // Default to US code
   });
+  const [countryError, setCountryError] = useState<string | null>(null);
 
   // Checkout state
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
@@ -146,6 +151,9 @@ const Checkout = () => {
       ...formData,
       [e.target.id]: e.target.value
     });
+    if (e.target.id === "country" && countryError) {
+      setCountryError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -511,15 +519,53 @@ const Checkout = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="country" className="text-foreground">Country Code (e.g. US)</Label>
-                    <Input 
-                      id="country" 
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      className="bg-input border-border/50 text-foreground" 
-                      maxLength={2}
-                      required
-                    />
+                    <Label className="text-foreground">Country</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded="false"
+                          className={cn(
+                            "w-full justify-between bg-input border-border/50 text-foreground hover:bg-input/80",
+                            countryError ? "border-red-500" : ""
+                          )}
+                        >
+                          {countryNameFor(formData.country) || "Select country"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="p-0 w-[320px]">
+                        <Command>
+                          <CommandInput placeholder="Search country..." />
+                          <CommandEmpty>No country found.</CommandEmpty>
+                          <CommandGroup>
+                            {COUNTRIES.map((c) => (
+                              <CommandItem
+                                key={c.code}
+                                value={`${c.name} ${c.code}`}
+                                onSelect={() => {
+                                  setFormData((prev) => ({ ...prev, country: c.code }));
+                                  if (countryError) setCountryError(null);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    formData.country === c.code ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {c.name} ({c.code})
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    {countryError && (
+                      <p className="text-xs text-red-500 mt-1">{countryError}</p>
+                    )}
                   </div>
                 </div>
 
