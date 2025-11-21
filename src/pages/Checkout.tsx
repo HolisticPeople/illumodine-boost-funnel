@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { COUNTRIES, countryNameFor } from "@/data/countries";
+import { COUNTRIES, countryNameFor, countryRequiresState } from "@/data/countries";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const Checkout = () => {
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
     address: "",
     city: "",
     state: "",
@@ -82,7 +83,8 @@ const Checkout = () => {
         state: formData.state,
         postcode: formData.zipCode,
         country: formData.country,
-        email: formData.email
+      email: formData.email,
+      phone: formData.phone,
       };
 
       // If we have address for shipping, try to get rates first if not present
@@ -134,7 +136,14 @@ const Checkout = () => {
 
   // Trigger totals refresh when address changes (debounced)
   useEffect(() => {
-      if (formData.address && formData.city && formData.state && formData.zipCode && formData.country.length >= 2) {
+      const needsState = countryRequiresState(formData.country);
+      const hasCore =
+        !!formData.address &&
+        !!formData.city &&
+        !!formData.zipCode &&
+        formData.country.length >= 2;
+      const hasStateOk = !needsState || !!formData.state;
+      if (hasCore && hasStateOk) {
           const timer = setTimeout(() => fetchTotals(), 500);
           return () => clearTimeout(timer);
       }
@@ -158,6 +167,27 @@ const Checkout = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const needsState = countryRequiresState(formData.country);
+    if (needsState && !formData.state.trim()) {
+      setIsSubmitting(false);
+      toast({
+        title: "State required",
+        description: "Please fill in the state / province for your country.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!formData.phone.trim()) {
+      setIsSubmitting(false);
+      toast({
+        title: "Phone required",
+        description: "Please enter a shipping phone number so carriers can reach you.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -170,7 +200,8 @@ const Checkout = () => {
             state: formData.state,
             postcode: formData.zipCode,
             country: formData.country,
-            email: formData.email
+            email: formData.email,
+            phone: formData.phone,
         };
         
         let submitRate = selectedRate;
@@ -501,10 +532,21 @@ const Checkout = () => {
                       id="state" 
                       value={formData.state}
                       onChange={handleInputChange}
-                      required
                       className="bg-input border-border/50 text-foreground" 
                     />
                   </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="phone" className="text-foreground">Phone (for shipping updates)</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-input border-border/50 text-foreground"
+                  />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">

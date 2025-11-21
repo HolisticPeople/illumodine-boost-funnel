@@ -160,6 +160,8 @@ export const bridge = {
     const u = new URL(wpBase.endsWith("/") ? wpBase : `${wpBase}/`);
     u.searchParams.set("hp_fb_confirm", "1");
     u.searchParams.set("cs", clientSecret);
+    // Pass funnel id so Bridge can load per-funnel hosted page styles
+    u.searchParams.set("fid", FUNNEL_ID);
     if (publishableKey) {
       u.searchParams.set("pk", publishableKey);
     }
