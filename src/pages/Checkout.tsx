@@ -130,8 +130,13 @@ const Checkout = () => {
             }
             setSelectedRate(currentRate);
           }
-        } catch (e) {
+        } catch (e: any) {
           console.warn("Shipping fetch failed", e);
+          toast({
+            title: "Shipping Error",
+            description: e.message || "Could not fetch shipping rates.",
+            variant: "destructive",
+          });
         }
       }
 
