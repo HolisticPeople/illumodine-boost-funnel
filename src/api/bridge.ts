@@ -79,7 +79,8 @@ export const bridge = {
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.message || "Shipping rate error");
-    return (json.rates || []) as ShippingRate[];
+    const list = Array.isArray(json) ? json : (json.rates || []);
+    return list as ShippingRate[];
   },
 
   async getTotals(
