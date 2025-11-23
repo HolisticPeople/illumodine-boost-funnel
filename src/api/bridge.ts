@@ -101,8 +101,8 @@ export const bridge = {
         address,
         items,
         selected_rate: selectedRate ? {
-          serviceName: selectedRate.serviceName,
-          amount: selectedRate.shipmentCost + selectedRate.otherCost
+          serviceName: selectedRate.serviceName || selectedRate.service_name,
+          amount: (selectedRate.shipmentCost || selectedRate.shipping_amount_raw || 0) + (selectedRate.otherCost || selectedRate.other_cost || 0)
         } : null,
         points_to_redeem: pointsToRedeem
       })
