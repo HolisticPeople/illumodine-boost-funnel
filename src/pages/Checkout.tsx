@@ -120,10 +120,12 @@ const Checkout = () => {
           setShippingRates(rates);
 
           if (rates.length > 0) {
-            // Find UPS Worldwide Expedited
-            const preferredRate = rates.find(r =>
-              r.serviceName.toLowerCase().includes("ups worldwide expedited")
-            );
+            // Find UPS Worldwide Expedited (handle both camelCase and snake_case)
+            const preferredRate = rates.find(r => {
+              if (!r) return false; // Skip null/undefined rates
+              const name = (r.serviceName || r.service_name || '').toString();
+              return name.toLowerCase().includes("ups worldwide expedited");
+            });
 
             if (preferredRate) {
               currentRate = preferredRate;
