@@ -73,7 +73,7 @@ export const bridge = {
       headers,
       body: JSON.stringify({
         funnel_id: FUNNEL_ID,
-        shipping_address: address,
+        address: address,
         items
       })
     });
