@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { COUNTRIES, countryNameFor, countryRequiresState } from "@/data/countries";
 
 const Checkout = () => {
+  console.log('[Checkout Debug] Component loaded - version with shipping debug');
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getPrice, loading: pricesLoading } = usePrices();
