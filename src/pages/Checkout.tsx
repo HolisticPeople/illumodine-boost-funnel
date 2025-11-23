@@ -252,8 +252,8 @@ const Checkout = () => {
           last_name: formData.lastName
         },
         selected_rate: submitRate ? {
-          serviceName: submitRate.serviceName,
-          amount: submitRate.shipmentCost + submitRate.otherCost
+          serviceName: submitRate.serviceName || submitRate.service_name,
+          amount: (submitRate.shipmentCost || submitRate.shipping_amount_raw || 0) + (submitRate.otherCost || submitRate.other_cost || 0)
         } : null
       };
 
