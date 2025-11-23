@@ -21,10 +21,10 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getPrice, loading: pricesLoading } = usePrices();
-  
+
   const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("small");
   const [quantity, setQuantity] = useState(1);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     firstName: "",
@@ -83,8 +83,8 @@ const Checkout = () => {
         state: formData.state,
         postcode: formData.zipCode,
         country: formData.country,
-      email: formData.email,
-      phone: formData.phone,
+        email: formData.email,
+        phone: formData.phone,
       };
 
       // If we have address for shipping, try to get rates first if not present
@@ -92,32 +92,46 @@ const Checkout = () => {
       // Free shipping for US
       const countryUpper = formData.country ? formData.country.toUpperCase() : '';
       const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
-      
+
       if (isUS) {
-          // Mock free shipping rate
-          const freeRate: ShippingRate = {
-              serviceCode: 'free_us',
-              serviceName: 'Free US Shipping',
-              shipmentCost: 0,
-              otherCost: 0
-          };
-          // Always ensure we use the free rate for US
-          if (!currentRate || currentRate.serviceCode !== 'free_us') {
-              currentRate = freeRate;
-              setSelectedRate(freeRate);
-              setShippingRates([freeRate]);
+        // Mock free shipping rate
+        const freeRate: ShippingRate = {
+          serviceCode: 'free_us',
+          serviceName: 'Free US Shipping',
+          shipmentCost: 0,
+          otherCost: 0
+        };
+        // Always ensure we use the free rate for US
+        if (!currentRate || currentRate.serviceCode !== 'free_us') {
+          currentRate = freeRate;
+          setSelectedRate(freeRate);
+          setShippingRates([freeRate]);
+        }
+      } else if (formData.zipCode && formData.country && formData.address) {
+        // For international, always try to fetch rates if we don't have a valid international rate selected
+        // or if the address changed (which triggers this function).
+        // We prioritize UPS Worldwide Expedited.
+        try {
+          const rates = await bridge.calculateShipping(address, items);
+          setShippingRates(rates);
+
+          if (rates.length > 0) {
+            // Find UPS Worldwide Expedited
+            const preferredRate = rates.find(r =>
+              r.serviceName.toLowerCase().includes("ups worldwide expedited")
+            );
+
+            if (preferredRate) {
+              currentRate = preferredRate;
+            } else {
+              // Fallback to the first available rate if preferred is not found
+              currentRate = rates[0];
+            }
+            setSelectedRate(currentRate);
           }
-      } else if (!currentRate && formData.zipCode && formData.country && formData.address) {
-         try {
-             const rates = await bridge.calculateShipping(address, items);
-             setShippingRates(rates);
-             if (rates.length > 0) {
-                 currentRate = rates[0];
-                 setSelectedRate(rates[0]);
-             }
-         } catch (e) {
-             console.warn("Shipping fetch failed", e);
-         }
+        } catch (e) {
+          console.warn("Shipping fetch failed", e);
+        }
       }
 
       const res = await bridge.getTotals(address, items, currentRate);
@@ -136,17 +150,17 @@ const Checkout = () => {
 
   // Trigger totals refresh when address changes (debounced)
   useEffect(() => {
-      const needsState = countryRequiresState(formData.country);
-      const hasCore =
-        !!formData.address &&
-        !!formData.city &&
-        !!formData.zipCode &&
-        formData.country.length >= 2;
-      const hasStateOk = !needsState || !!formData.state;
-      if (hasCore && hasStateOk) {
-          const timer = setTimeout(() => fetchTotals(), 500);
-          return () => clearTimeout(timer);
-      }
+    const needsState = countryRequiresState(formData.country);
+    const hasCore =
+      !!formData.address &&
+      !!formData.city &&
+      !!formData.zipCode &&
+      formData.country.length >= 2;
+    const hasStateOk = !needsState || !!formData.state;
+    if (hasCore && hasStateOk) {
+      const timer = setTimeout(() => fetchTotals(), 500);
+      return () => clearTimeout(timer);
+    }
   }, [formData.address, formData.city, formData.state, formData.zipCode, formData.country]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -189,87 +203,87 @@ const Checkout = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-        const items = getCartItems();
-        const address = {
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            address_1: formData.address,
-            city: formData.city,
-            state: formData.state,
-            postcode: formData.zipCode,
-            country: formData.country,
-            email: formData.email,
-            phone: formData.phone,
+      const items = getCartItems();
+      const address = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        address_1: formData.address,
+        city: formData.city,
+        state: formData.state,
+        postcode: formData.zipCode,
+        country: formData.country,
+        email: formData.email,
+        phone: formData.phone,
+      };
+
+      let submitRate = selectedRate;
+
+      // If no rate selected (e.g. user quick submitted), but it's US, force free shipping
+      const countryUpper = formData.country ? formData.country.toUpperCase() : '';
+      const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
+      if (!submitRate && isUS) {
+        submitRate = {
+          serviceCode: 'free_us',
+          serviceName: 'Free US Shipping',
+          shipmentCost: 0,
+          otherCost: 0
         };
-        
-        let submitRate = selectedRate;
-        
-        // If no rate selected (e.g. user quick submitted), but it's US, force free shipping
-        const countryUpper = formData.country ? formData.country.toUpperCase() : '';
-        const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
-        if (!submitRate && isUS) {
-             submitRate = {
-                serviceCode: 'free_us',
-                serviceName: 'Free US Shipping',
-                shipmentCost: 0,
-                otherCost: 0
-            };
-        }
+      }
 
-        const payload = {
-            items,
-            shipping_address: address,
-            customer: {
-                email: formData.email,
-                first_name: formData.firstName,
-                last_name: formData.lastName
-            },
-            selected_rate: submitRate ? {
-                serviceName: submitRate.serviceName,
-                amount: submitRate.shipmentCost + submitRate.otherCost
-            } : null
-        };
+      const payload = {
+        items,
+        shipping_address: address,
+        customer: {
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName
+        },
+        selected_rate: submitRate ? {
+          serviceName: submitRate.serviceName,
+          amount: submitRate.shipmentCost + submitRate.otherCost
+        } : null
+      };
 
-        const res = await bridge.submitCheckout(payload);
-        
-        console.log("Checkout response:", res); // Debugging
+      const res = await bridge.submitCheckout(payload);
 
-        // Redirect to hosted payment page
-        if (res.client_secret) {
-            const base = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
-            const url = new URL(`${window.location.origin}${base}`);
-            // Indicate to the SPA that we should show the thank-you experience
-            url.searchParams.set("go", "thankyou");
-            const returnUrl = url.toString();
+      console.log("Checkout response:", res); // Debugging
 
-            const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
-            console.log("Redirecting to:", redirectUrl); // Debugging
-            window.location.href = redirectUrl;
-        } else {
-            throw new Error("Invalid response from server: missing client_secret");
-        }
+      // Redirect to hosted payment page
+      if (res.client_secret) {
+        const base = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
+        const url = new URL(`${window.location.origin}${base}`);
+        // Indicate to the SPA that we should show the thank-you experience
+        url.searchParams.set("go", "thankyou");
+        const returnUrl = url.toString();
+
+        const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
+        console.log("Redirecting to:", redirectUrl); // Debugging
+        window.location.href = redirectUrl;
+      } else {
+        throw new Error("Invalid response from server: missing client_secret");
+      }
 
     } catch (error: any) {
-        console.error("Checkout failed", error);
-        if (error.code === 'funnel_off' && error.redirect) {
-            window.location.href = error.redirect;
-            return;
-        }
-        toast({
-            title: "Error",
-            description: error.message || "Something went wrong. Please try again.",
-            variant: "destructive"
-        });
-        setIsSubmitting(false);
+      console.error("Checkout failed", error);
+      if (error.code === 'funnel_off' && error.redirect) {
+        window.location.href = error.redirect;
+        return;
+      }
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+      setIsSubmitting(false);
     }
   };
 
   // Display prices
   const priceSmall = getPrice(smallProduct?.sku || "") || 29;
   const priceLarge = getPrice(largeProduct?.sku || "") || 114;
-  
+
   const currentPrice = selectedOffer === "small" ? priceSmall : priceLarge;
   const displayTotal = totals ? totals.grand_total : (currentPrice * quantity);
 
@@ -282,7 +296,7 @@ const Checkout = () => {
             <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
           </a>
         </div>
-        
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-accent via-accent to-foreground bg-clip-text text-transparent">
@@ -298,18 +312,17 @@ const Checkout = () => {
           <div className="space-y-6">
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50">
               <h2 className="text-2xl font-bold mb-6 text-accent">Select Your Package</h2>
-              
+
               {/* Small Bottle Option */}
-              <div 
+              <div
                 onClick={() => {
                   setSelectedOffer("small");
                   setQuantity(1);
                 }}
-                className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 mb-4 ${
-                  selectedOffer === "small" 
-                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]" 
+                className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 mb-4 ${selectedOffer === "small"
+                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
                     : "border-border/50 hover:border-accent/50"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-6">
                   <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto" />
@@ -317,7 +330,7 @@ const Checkout = () => {
                     <h3 className="text-xl font-bold text-foreground mb-1">Starter Size</h3>
                     <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
                     <p className="text-2xl font-bold text-accent mt-2">
-                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
+                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
                     </p>
                     <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
@@ -325,16 +338,15 @@ const Checkout = () => {
               </div>
 
               {/* Large Bottle Option */}
-              <div 
+              <div
                 onClick={() => {
                   setSelectedOffer("large");
                   setQuantity(1);
                 }}
-                className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 relative ${
-                  selectedOffer === "large" 
-                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]" 
+                className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 relative ${selectedOffer === "large"
+                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
                     : "border-border/50 hover:border-accent/50"
-                }`}
+                  }`}
               >
                 <div className="absolute -top-3 right-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
                   BEST VALUE
@@ -346,7 +358,7 @@ const Checkout = () => {
                     <p className="text-accent font-semibold">2 fl oz (60ml)</p>
                     <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
                     <p className="text-2xl font-bold text-accent mt-2">
-                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
+                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
                     </p>
                     <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
@@ -376,7 +388,7 @@ const Checkout = () => {
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               {selectedOffer === "large" && (
                 <div className="mt-4 p-4 bg-accent/10 rounded-lg border border-accent/30">
                   <p className="text-accent font-semibold flex items-center gap-2">
@@ -409,7 +421,7 @@ const Checkout = () => {
             {/* Order Summary */}
             <Card className="p-6 bg-gradient-to-br from-secondary/50 to-card/50 backdrop-blur-sm border-accent/30">
               <h2 className="text-2xl font-bold mb-6 text-accent">Order Summary</h2>
-              
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-foreground">
                   <span>
@@ -419,29 +431,34 @@ const Checkout = () => {
                     ${(currentPrice * quantity).toFixed(2)}
                   </span>
                 </div>
-                
+
                 {selectedOffer === "large" && (
                   <div className="flex justify-between text-accent">
                     <span>FREE 0.5oz Bottle × {quantity}</span>
                     <span className="font-semibold">$0</span>
                   </div>
                 )}
-                
+
                 {totals?.discount_total > 0 && (
-                    <div className="flex justify-between text-green-500">
-                        <span>Discount</span>
-                        <span>-${totals.discount_total.toFixed(2)}</span>
-                    </div>
+                  <div className="flex justify-between text-green-500">
+                    <span>Discount</span>
+                    <span>-${totals.discount_total.toFixed(2)}</span>
+                  </div>
                 )}
                 {totals?.global_discount > 0 && (
-                    <div className="flex justify-between text-green-500">
-                        <span>Global Discount</span>
-                        <span>-${totals.global_discount.toFixed(2)}</span>
-                    </div>
+                  <div className="flex justify-between text-green-500">
+                    <span>Global Discount</span>
+                    <span>-${totals.global_discount.toFixed(2)}</span>
+                  </div>
                 )}
 
                 <div className="flex justify-between text-foreground">
-                  <span>Shipping</span>
+                  <div className="flex flex-col">
+                    <span>Shipping</span>
+                    {selectedRate && selectedRate.serviceCode !== 'free_us' && (
+                      <span className="text-xs text-muted-foreground">{selectedRate.serviceName}</span>
+                    )}
+                  </div>
                   <span className="font-semibold text-accent">
                     {isCalculating ? (
                       <Loader2 className="h-3 w-3 animate-spin inline" />
@@ -450,7 +467,7 @@ const Checkout = () => {
                     )}
                   </span>
                 </div>
-                
+
                 <div className="pt-3 border-t border-accent/30 flex justify-between text-xl font-bold">
                   <span className="text-accent">Total:</span>
                   <span className="text-accent">
@@ -467,73 +484,73 @@ const Checkout = () => {
             {/* Checkout Form */}
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50">
               <h3 className="text-xl font-bold mb-6 text-accent">Shipping Information</h3>
-              
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName" className="text-foreground">First Name</Label>
-                    <Input 
-                      id="firstName" 
+                    <Input
+                      id="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
-                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                     />
                   </div>
                   <div>
                     <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
-                    <Input 
-                      id="lastName" 
+                    <Input
+                      id="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
-                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email" className="text-foreground">Email</Label>
-                  <Input 
-                    id="email" 
-                    type="email" 
+                  <Input
+                    id="email"
+                    type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="address" className="text-foreground">Address</Label>
-                  <Input 
-                    id="address" 
+                  <Input
+                    id="address"
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                    className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="city" className="text-foreground">City</Label>
-                    <Input 
-                      id="city" 
+                    <Input
+                      id="city"
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                     />
                   </div>
                   {countryRequiresState(formData.country) && (
                     <div>
                       <Label htmlFor="state" className="text-foreground">State</Label>
-                      <Input 
-                        id="state" 
+                      <Input
+                        id="state"
                         value={formData.state}
                         onChange={handleInputChange}
-                        className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                        className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                       />
                     </div>
                   )}
@@ -550,16 +567,16 @@ const Checkout = () => {
                     className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="zipCode" className="text-foreground">ZIP Code</Label>
-                    <Input 
-                      id="zipCode" 
+                    <Input
+                      id="zipCode"
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
-                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground" 
+                      className="!bg-input !text-foreground border-border/50 focus-visible:!bg-input focus-visible:!text-foreground"
                     />
                   </div>
                   <div>
@@ -613,9 +630,9 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <Button 
+                <Button
                   type="submit"
-                  size="lg" 
+                  size="lg"
                   disabled={isSubmitting || isCalculating}
                   className="w-full bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-lg py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
                 >
@@ -633,8 +650,8 @@ const Checkout = () => {
 
         {/* Back to Landing */}
         <div className="text-center mt-8">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => navigate('/')}
             className="text-accent hover:text-accent/80"
           >
