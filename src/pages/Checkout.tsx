@@ -113,7 +113,9 @@ const Checkout = () => {
         // or if the address changed (which triggers this function).
         // We prioritize UPS Worldwide Expedited.
         try {
+          console.log('[Shipping Debug] Fetching rates for:', { address, items });
           const rates = await bridge.calculateShipping(address, items);
+          console.log('[Shipping Debug] Received rates:', rates);
           setShippingRates(rates);
 
           if (rates.length > 0) {
