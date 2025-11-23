@@ -465,7 +465,7 @@ const Checkout = () => {
                   <div className="flex flex-col">
                     <span>Shipping</span>
                     {selectedRate && selectedRate.serviceCode !== 'free_us' && (
-                      <span className="text-xs text-muted-foreground">{selectedRate.serviceName}</span>
+                      <span className="text-xs text-muted-foreground">{selectedRate.serviceName || selectedRate.service_name}</span>
                     )}
                   </div>
                   <span className="font-semibold text-accent">

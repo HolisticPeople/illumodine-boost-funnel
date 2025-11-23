@@ -29,10 +29,14 @@ export interface Address {
 }
 
 export interface ShippingRate {
-  serviceCode: string;
-  serviceName: string;
-  shipmentCost: number;
-  otherCost: number;
+  serviceCode?: string;
+  serviceName?: string;
+  service_code?: string;
+  service_name?: string;
+  shipmentCost?: number;
+  shipping_amount_raw?: number;
+  otherCost?: number;
+  other_cost?: number;
 }
 
 export interface TotalsResponse {
