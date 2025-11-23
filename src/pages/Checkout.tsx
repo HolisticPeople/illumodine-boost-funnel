@@ -38,6 +38,7 @@ const Checkout = () => {
     country: "US" // Default to US code
   });
   const [countryError, setCountryError] = useState<string | null>(null);
+  const [countryOpen, setCountryOpen] = useState(false);
 
   // Checkout state
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
@@ -320,8 +321,8 @@ const Checkout = () => {
                   setQuantity(1);
                 }}
                 className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 mb-4 ${selectedOffer === "small"
-                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
-                    : "border-border/50 hover:border-accent/50"
+                  ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
+                  : "border-border/50 hover:border-accent/50"
                   }`}
               >
                 <div className="flex items-center gap-6">
@@ -344,8 +345,8 @@ const Checkout = () => {
                   setQuantity(1);
                 }}
                 className={`p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 relative ${selectedOffer === "large"
-                    ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
-                    : "border-border/50 hover:border-accent/50"
+                  ? "border-accent bg-accent/10 shadow-[0_0_20px_hsl(45_95%_60%/0.3)]"
+                  : "border-border/50 hover:border-accent/50"
                   }`}
               >
                 <div className="absolute -top-3 right-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
@@ -581,7 +582,7 @@ const Checkout = () => {
                   </div>
                   <div>
                     <Label className="text-foreground">Country</Label>
-                    <Popover>
+                    <Popover open={countryOpen} onOpenChange={setCountryOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           type="button"
@@ -609,6 +610,7 @@ const Checkout = () => {
                                 onSelect={() => {
                                   setFormData((prev) => ({ ...prev, country: c.code }));
                                   if (countryError) setCountryError(null);
+                                  setCountryOpen(false);
                                 }}
                               >
                                 <Check

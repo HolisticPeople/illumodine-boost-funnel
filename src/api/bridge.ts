@@ -79,12 +79,12 @@ export const bridge = {
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.message || "Shipping rate error");
-    return json as ShippingRate[];
+    return (json.rates || []) as ShippingRate[];
   },
 
   async getTotals(
-    address: Address, 
-    items: CartItem[], 
+    address: Address,
+    items: CartItem[],
     selectedRate?: ShippingRate,
     pointsToRedeem: number = 0
   ) {
@@ -119,11 +119,11 @@ export const bridge = {
     });
     const json = await res.json();
     if (!res.ok) {
-        // If 409 funnel_off, throw specific object so UI can redirect
-        if (res.status === 409 && json.code === 'funnel_off') {
-            throw { code: 'funnel_off', redirect: json.data?.redirect || '/' };
-        }
-        throw new Error(json.message || "Checkout error");
+      // If 409 funnel_off, throw specific object so UI can redirect
+      if (res.status === 409 && json.code === 'funnel_off') {
+        throw { code: 'funnel_off', redirect: json.data?.redirect || '/' };
+      }
+      throw new Error(json.message || "Checkout error");
     }
     return json;
   },
@@ -134,12 +134,12 @@ export const bridge = {
     if (!res.ok) throw new Error(json.message || "Price fetch error");
     return json as Record<string, number>; // sku -> price
   },
-  
+
   async getOrderSummary(orderId?: string, piId?: string) {
     const url = new URL(`${APP_API_BASE}/orders/summary`);
     if (orderId) url.searchParams.set('order_id', orderId);
     if (piId) url.searchParams.set('pi_id', piId);
-    
+
     const res = await fetch(url.toString());
     const json = await res.json();
     if (!res.ok) throw new Error(json.message || "Order summary error");
@@ -147,10 +147,10 @@ export const bridge = {
   },
 
   async resolveOrderByPi(piId: string) {
-      const res = await fetch(`${APP_API_BASE}/orders/resolve?pi_id=${piId}`);
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || "Resolve error");
-      return json.order_id;
+    const res = await fetch(`${APP_API_BASE}/orders/resolve?pi_id=${piId}`);
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || "Resolve error");
+    return json.order_id;
   },
 
   buildHostedConfirmUrl(clientSecret: string, returnUrl: string, publishableKey?: string) {
