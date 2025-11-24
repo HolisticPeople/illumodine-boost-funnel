@@ -492,10 +492,6 @@ const Checkout = () => {
                   </span>
                 </div>
               </div>
-
-              <p className="text-sm text-muted-foreground mb-4">
-                * International shipping rates will be calculated at checkout
-              </p>
             </Card>
 
             {/* Checkout Form */}
