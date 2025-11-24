@@ -17,6 +17,10 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 import { cn } from "@/lib/utils";
 import { COUNTRIES, countryNameFor, countryRequiresState } from "@/data/countries";
 
+// Get Products (static lookups)
+const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
+const largeProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "large");
+
 const Checkout = () => {
   console.log('[Checkout Debug] Component loaded - version with shipping debug');
   const navigate = useNavigate();
@@ -48,10 +52,6 @@ const Checkout = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get Products
-  const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
-  const largeProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "large");
-
   const getCartItems = useCallback((): CartItem[] => {
     const items: CartItem[] = [];
     if (selectedOffer === "small" && smallProduct) {
@@ -68,7 +68,7 @@ const Checkout = () => {
       });
     }
     return items;
-  }, [selectedOffer, quantity, smallProduct, largeProduct]);
+  }, [selectedOffer, quantity]);
 
   // Calculate Totals
   const fetchTotals = useCallback(async () => {
