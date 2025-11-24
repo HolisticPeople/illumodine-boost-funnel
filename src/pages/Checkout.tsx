@@ -22,7 +22,7 @@ const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
 const largeProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "large");
 
 const Checkout = () => {
-  console.log('[Checkout Debug] Component loaded - version with shipping debug');
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getPrice, loading: pricesLoading } = usePrices();
@@ -114,9 +114,9 @@ const Checkout = () => {
         // or if the address changed (which triggers this function).
         // We prioritize UPS Worldwide Expedited.
         try {
-          console.log('[Shipping Debug] Fetching rates for:', { address, items });
+
           const rates = await bridge.calculateShipping(address, items);
-          console.log('[Shipping Debug] Received rates:', rates);
+
           setShippingRates(rates);
 
           if (rates.length > 0) {
@@ -259,7 +259,7 @@ const Checkout = () => {
 
       const res = await bridge.submitCheckout(payload);
 
-      console.log("Checkout response:", res); // Debugging
+
 
       // Redirect to hosted payment page
       if (res.client_secret) {
@@ -270,7 +270,7 @@ const Checkout = () => {
         const returnUrl = url.toString();
 
         const redirectUrl = bridge.buildHostedConfirmUrl(res.client_secret, returnUrl, res.publishable);
-        console.log("Redirecting to:", redirectUrl); // Debugging
+
         window.location.href = redirectUrl;
       } else {
         throw new Error("Invalid response from server: missing client_secret");
