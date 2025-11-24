@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,12 @@ const Checkout = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Use ref to track selectedRate without creating circular dependency in fetchTotals
+  const selectedRateRef = useRef<ShippingRate | undefined>(undefined);
+  useEffect(() => {
+    selectedRateRef.current = selectedRate;
+  }, [selectedRate]);
+
   const getCartItems = useCallback((): CartItem[] => {
     const items: CartItem[] = [];
     if (selectedOffer === "small" && smallProduct) {
@@ -90,7 +96,7 @@ const Checkout = () => {
       };
 
       // If we have address for shipping, try to get rates first if not present
-      let currentRate = selectedRate;
+      let currentRate = selectedRateRef.current;
       // Free shipping for US
       const countryUpper = formData.country ? formData.country.toUpperCase() : '';
       const isUS = countryUpper === 'US' || countryUpper === 'USA' || countryUpper === 'UNITED STATES';
@@ -152,7 +158,7 @@ const Checkout = () => {
     } finally {
       setIsCalculating(false);
     }
-  }, [formData, getCartItems, selectedRate]);
+  }, [formData, getCartItems]);
 
   // Trigger totals update when cart changes
   useEffect(() => {
