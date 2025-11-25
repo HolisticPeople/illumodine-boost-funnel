@@ -1,13 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
 import logo from "@/assets/holisticpeople-logo.png";
+import heroBanner from "@/assets/hero-banner.png";
+import BlackFridayRibbon from "@/components/BlackFridayRibbon";
 
 const Landing = () => {
   const navigate = useNavigate();
+  
+  // Set to false to hide Black Friday ribbons
+  const showBlackFridayRibbons = true;
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,6 +22,15 @@ const Landing = () => {
           <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
         </a>
       </div>
+      
+      {/* Hero Banner Section */}
+      <section className="relative overflow-hidden">
+        <img 
+          src={heroBanner} 
+          alt="Illumodine - The best Iodine in the world!" 
+          className="w-full h-auto object-cover"
+        />
+      </section>
       
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[600px] flex items-center">
@@ -158,9 +172,20 @@ const Landing = () => {
           </p>
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)]">
+            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)] relative overflow-hidden">
+              <BlackFridayRibbon enabled={showBlackFridayRibbons} position="top-left" />
               <div className="text-accent text-6xl font-bold mb-4">$29</div>
               <h3 className="text-2xl font-bold mb-4 text-foreground">Starter Size</h3>
+              
+              {/* Bottle Image */}
+              <div className="flex justify-center mb-4">
+                <img 
+                  src={bottleSmall} 
+                  alt="Illumodine 0.5oz bottle" 
+                  className="h-24 w-auto drop-shadow-lg"
+                />
+              </div>
+              
               <p className="text-lg mb-4 text-accent">0.5 fl oz (15ml) Bottle</p>
               <p className="text-foreground/80 mb-6">+ FREE Shipping (US Only)</p>
               <ul className="text-left space-y-2 mb-6 text-foreground/90">
@@ -179,7 +204,8 @@ const Landing = () => {
               </ul>
             </Card>
 
-            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative">
+            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-hidden">
+              <BlackFridayRibbon enabled={showBlackFridayRibbons} />
               <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold">
                 BEST VALUE
               </div>
@@ -202,7 +228,8 @@ const Landing = () => {
               </div>
               
               <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
-              <p className="text-foreground/80 mb-6">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
+              <p className="text-foreground/80 mb-4">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
+              <p className="text-sm text-accent/80 mb-6 font-semibold">(2.5 fl oz total)</p>
               <ul className="text-left space-y-2 mb-6 text-foreground/90">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
@@ -227,6 +254,31 @@ const Landing = () => {
           >
             Claim Your Special Offer Now
           </Button>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            What Our Customers Say
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12">
+            Real results from real people
+          </p>
+          
+          <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30">
+            <div className="flex gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+              ))}
+            </div>
+            <h3 className="text-2xl font-bold mb-4 text-accent">Excellent!</h3>
+            <p className="text-lg text-foreground/90 mb-6 italic">
+              "I was pretty sure I was struggling with some thyroid issues prior to trying this but was also interested in the detoxifying effects Dr Cousens spoke about regarding this supplement. Within just over a week, my chronic fatigue and pain diminished by around 40%. I haven't felt this clear, comfortable, and energetic in years. Very thrilled so far. Thank you!"
+            </p>
+            <p className="text-foreground font-semibold">— Dorothy</p>
+          </Card>
         </div>
       </section>
 
