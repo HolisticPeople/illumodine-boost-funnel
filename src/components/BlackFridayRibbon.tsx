@@ -12,12 +12,16 @@ const BlackFridayRibbon = ({
   if (!enabled) return null;
   
   const positionClasses = position === 'top-left' 
-    ? 'left-0 top-0 -rotate-45 -translate-x-[30%] translate-y-[40%]'
-    : 'right-0 top-0 rotate-45 translate-x-[30%] translate-y-[40%]';
+    ? 'left-0 top-0 origin-top-left'
+    : 'right-0 top-0 origin-top-right';
+  
+  const rotateClasses = position === 'top-left'
+    ? '-rotate-45'
+    : 'rotate-45';
   
   return (
-    <div className={`absolute ${positionClasses} z-20 overflow-hidden`}>
-      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white px-12 py-2 shadow-lg">
+    <div className={`absolute ${positionClasses} w-40 h-40 overflow-hidden pointer-events-none`}>
+      <div className={`absolute ${rotateClasses} bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white shadow-lg ${position === 'top-left' ? 'left-[-50px] top-[25px]' : 'right-[-50px] top-[25px]'} w-[200px] py-2 text-center`}>
         <span className="text-xs font-bold tracking-wider whitespace-nowrap">
           {text}
         </span>
