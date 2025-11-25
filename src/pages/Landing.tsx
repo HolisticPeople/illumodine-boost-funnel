@@ -204,9 +204,9 @@ const Landing = () => {
               </ul>
             </Card>
 
-            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-hidden">
+            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-hidden mt-8">
               <BlackFridayRibbon enabled={showBlackFridayRibbons} />
-              <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold">
+              <div className="absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold text-sm z-0">
                 BEST VALUE
               </div>
               <div className="text-accent text-6xl font-bold mb-4">$114</div>
