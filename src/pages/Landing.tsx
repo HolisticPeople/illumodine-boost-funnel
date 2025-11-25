@@ -172,7 +172,7 @@ const Landing = () => {
           </p>
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)] relative overflow-hidden">
+            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)] relative overflow-visible h-full flex flex-col">
               <BlackFridayRibbon enabled={showBlackFridayRibbons} position="top-left" />
               <div className="text-accent text-6xl font-bold mb-4">$29</div>
               <h3 className="text-2xl font-bold mb-4 text-foreground">Starter Size</h3>
@@ -188,7 +188,7 @@ const Landing = () => {
               
               <p className="text-lg mb-4 text-accent">0.5 fl oz (15ml) Bottle</p>
               <p className="text-foreground/80 mb-6">+ FREE Shipping (US Only)</p>
-              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+              <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
                   Perfect for trying Illumodine™
@@ -204,9 +204,9 @@ const Landing = () => {
               </ul>
             </Card>
 
-            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-hidden mt-8">
+            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-visible h-full flex flex-col">
               <BlackFridayRibbon enabled={showBlackFridayRibbons} />
-              <div className="absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold text-sm z-0">
+              <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold text-sm z-20">
                 BEST VALUE
               </div>
               <div className="text-accent text-6xl font-bold mb-4">$114</div>
@@ -230,7 +230,7 @@ const Landing = () => {
               <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
               <p className="text-foreground/80 mb-4">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
               <p className="text-sm text-accent/80 mb-6 font-semibold">(2.5 fl oz total)</p>
-              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+              <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
                   Maximum savings per dose
