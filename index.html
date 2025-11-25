@@ -29,8 +29,10 @@
   <script>
     // Set OG image and URL dynamically based on current domain
     (function () {
-      const baseUrl = window.location.origin + window.location.pathname;
-      const imageUrl = baseUrl + 'og-image.png';
+      const origin = window.location.origin;
+      const pathname = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
+      const baseUrl = origin + pathname + '/';
+      const imageUrl = origin + pathname + '/og-image.png';
 
       document.getElementById('og-image').setAttribute('content', imageUrl);
       document.getElementById('og-url').setAttribute('content', baseUrl);
