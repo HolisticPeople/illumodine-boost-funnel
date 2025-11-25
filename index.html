@@ -16,15 +16,27 @@
   <meta property="og:description"
     content="The best iodine supplement in the world! Scalar-charged for maximum effectiveness. Special offer with free shipping!" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://holisticpeople.com/funnels/illumodine/og-image.png" />
-  <meta property="og:url" content="https://holisticpeople.com/funnels/illumodine/" />
+  <meta property="og:image" id="og-image" content="" />
+  <meta property="og:url" id="og-url" content="" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@HolisticPeople" />
   <meta name="twitter:title" content="Illumodine™ - Pure High-Potency Iodine" />
   <meta name="twitter:description"
     content="The best iodine supplement in the world! Experience the most bioavailable iodine supplement. Scalar-charged, 100% bioactive iodine (I⁻)." />
-  <meta name="twitter:image" content="https://holisticpeople.com/funnels/illumodine/og-image.png" />
+  <meta name="twitter:image" id="twitter-image" content="" />
+
+  <script>
+    // Set OG image and URL dynamically based on current domain
+    (function () {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const imageUrl = baseUrl + 'og-image.png';
+
+      document.getElementById('og-image').setAttribute('content', imageUrl);
+      document.getElementById('og-url').setAttribute('content', baseUrl);
+      document.getElementById('twitter-image').setAttribute('content', imageUrl);
+    })();
+  </script>
 </head>
 
 <body>
