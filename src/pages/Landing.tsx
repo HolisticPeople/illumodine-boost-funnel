@@ -210,6 +210,16 @@ const Landing = () => {
               </Card>
             </CollapsibleContent>
           </Collapsible>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Illumodine Now
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -251,6 +261,16 @@ const Landing = () => {
               </p>
             </div>
           </Card>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Order Your Illumodine Today
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -287,6 +307,16 @@ const Landing = () => {
                 <li>• Supports DNA repair and healthy apoptosis</li>
               </ul>
             </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Start Your Journey to Wellness
+            </Button>
           </div>
         </div>
       </section>
@@ -422,6 +452,16 @@ const Landing = () => {
             <CarouselPrevious className="left-2 md:-left-12" />
             <CarouselNext className="right-2 md:-right-12" />
           </Carousel>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Join Thousands of Happy Customers
+            </Button>
+          </div>
         </div>
       </section>
 
