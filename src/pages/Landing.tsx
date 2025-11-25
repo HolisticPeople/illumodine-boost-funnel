@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Star, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
 import logo from "@/assets/holisticpeople-logo.png";
@@ -388,7 +389,7 @@ const Landing = () => {
 
       {/* Testimonials Section */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
             What Our Customers Say
           </h2>
@@ -396,18 +397,31 @@ const Landing = () => {
             Real results from real people
           </p>
           
-          <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30">
-            <div className="flex gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+          <Carousel className="w-full max-w-4xl mx-auto">
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index}>
+                  <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30 h-full flex flex-col">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-accent">{testimonial.title}</h3>
+                    <p className="text-lg text-foreground/90 mb-6 italic flex-grow">
+                      "{testimonial.text}"
+                    </p>
+                    <div className="space-y-2">
+                      <p className="text-foreground font-semibold">— {testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">Verified Buyer by Yotpo</p>
+                    </div>
+                  </Card>
+                </CarouselItem>
               ))}
-            </div>
-            <h3 className="text-2xl font-bold mb-4 text-accent">Excellent!</h3>
-            <p className="text-lg text-foreground/90 mb-6 italic">
-              "I was pretty sure I was struggling with some thyroid issues prior to trying this but was also interested in the detoxifying effects Dr Cousens spoke about regarding this supplement. Within just over a week, my chronic fatigue and pain diminished by around 40%. I haven't felt this clear, comfortable, and energetic in years. Very thrilled so far. Thank you!"
-            </p>
-            <p className="text-foreground font-semibold">— Dorothy</p>
-          </Card>
+            </CarouselContent>
+            <CarouselPrevious className="left-2 md:-left-12" />
+            <CarouselNext className="right-2 md:-right-12" />
+          </Carousel>
         </div>
       </section>
 
@@ -434,6 +448,69 @@ const Landing = () => {
     </div>
   );
 };
+
+const testimonials = [
+  {
+    title: "Excellent!",
+    text: "I was pretty sure I was struggling with some thyroid issues prior to trying this but was also interested in the detoxifying effects Dr Cousens spoke about regarding this supplement. Within just over a week, my chronic fatigue and pain diminished by around 40%. I haven't felt this clear, comfortable, and energetic in years. Very thrilled so far. Thank you!",
+    name: "Dorothy"
+  },
+  {
+    title: "Excellent Iodine supplement",
+    text: "Excellent Iodine supplement that does more than just provide the body with iodine. A great product for daily use and during a detox fast.",
+    name: "Jennifer L."
+  },
+  {
+    title: "excellent protection",
+    text: "excellent product, despite a compromised immune system i have only gotten sick once in more than a decade.",
+    name: "Giselle M."
+  },
+  {
+    title: "TOP !",
+    text: "I take it daily (1-2 drops). I would not want to be without it. One of the most impactful and multifaceted elements you can take. Helps me energize when I take it during the day and helps me get back to sleep when I take it at night when I get up.",
+    name: "Chris G."
+  },
+  {
+    title: "Love this stuff",
+    text: "I take this every day it's so helpful to my mental health, among other things",
+    name: "Laura H."
+  },
+  {
+    title: "Liquid Iodine",
+    text: "best ever Iodine supplement I have ever tried",
+    name: "Mira B."
+  },
+  {
+    title: "Iodine I can trust",
+    text: "very pleased with the product. When I read the instructions, I made up a calendar to begin the titering. Today I'm happy to say, I'm enjoying a brighter mind, retaining information and not struggling to carry on a conversation after 4 p.m. On December 17th, I'll go to the maintenance dose. Thank you!",
+    name: "Patricia M."
+  },
+  {
+    title: "Awesome Iodine",
+    text: "The best and highly-potent iodine I have encountered. Massive detox effect that boosts clarity and mental and other capabilities.",
+    name: "Vikentiy M."
+  },
+  {
+    title: "Most Important Supplement We Take",
+    text: "This is a daily must for us! If we could only take one thing, it'd be Illumodine.",
+    name: "Judy B."
+  },
+  {
+    title: "Amazing",
+    text: "Amazing supplement! Something I will take for the rest of my life!",
+    name: "Vivianne N."
+  },
+  {
+    title: "Illumodine",
+    text: "This is an excellent product. My annual health test for iodine has now perfect for several years.",
+    name: "Stella A."
+  },
+  {
+    title: "Best Iodine!",
+    text: "Dr Cousens iodine is potent! I definitely feel better when I take it!",
+    name: "Stephanie B."
+  }
+];
 
 const benefits = [
   "Powerful antioxidant – 3,000x more effective than normal tissue at absorbing radiation",
