@@ -1,13 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, Star, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import bottleLarge from "@/assets/illum-2oz-bottle.png";
 import bottleSmall from "@/assets/illum-05oz-bottle.png";
 import logo from "@/assets/holisticpeople-logo.png";
+import heroBanner from "@/assets/hero-banner.png";
+import drCousens from "@/assets/dr-cousens.png";
+import BlackFridayRibbon from "@/components/BlackFridayRibbon";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const Landing = () => {
   const navigate = useNavigate();
+  
+  // Set to false to hide Black Friday ribbons
+  const showBlackFridayRibbons = true;
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,6 +29,15 @@ const Landing = () => {
           <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
         </a>
       </div>
+      
+      {/* Black Friday Banner */}
+      {showBlackFridayRibbons && (
+        <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
+          <p className="text-lg md:text-xl font-bold tracking-wide">
+            🔥 BLACK FRIDAY SPECIAL - Limited Time Offer! 🔥
+          </p>
+        </div>
+      )}
       
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[600px] flex items-center">
@@ -69,6 +90,139 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Dr. Cousens Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-secondary/30 via-background to-secondary/20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            Meet Dr. Gabriel Cousens
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12">
+            The Creator of Illumodine™
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
+            {/* Left: Dr. Cousens Image */}
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/30 rounded-full blur-2xl scale-90" />
+                <img 
+                  src={drCousens} 
+                  alt="Dr. Gabriel Cousens" 
+                  className="relative rounded-2xl shadow-2xl w-full max-w-md"
+                />
+              </div>
+            </div>
+
+            {/* Right: Quotes */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-accent">On Detoxification & Purity</h3>
+                <div className="space-y-3">
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Forces out fluoride from the pineal gland... uncalcifies the pineal gland."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Forces out bromine, chloride, lead, mercury, and cadmium."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Clear[s] the pineal gland... opening it up."
+                  </blockquote>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-accent">On Superior Absorption</h3>
+                <div className="space-y-3">
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Far more active... better absorbed, better utilized."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Illumodine is in the I-minus form... activated in that way."
+                  </blockquote>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-accent">On General Wellness</h3>
+                <div className="space-y-3">
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "The general mineral for optimal health."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "The most important mineral besides oxygen for overall function."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "A big player in adrenals, lungs, breast, skin [and] estrogen regulation."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "The universal health mineral."
+                  </blockquote>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-accent">On Spiritual Connection</h3>
+                <div className="space-y-3">
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Connected with the opening up of the fifth chakra."
+                  </blockquote>
+                  <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
+                    "Helps open up... the upper chakras."
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Collapsible Article */}
+          <Collapsible>
+            <CollapsibleTrigger asChild>
+              <Button 
+                variant="outline" 
+                className="w-full md:w-auto mx-auto flex items-center gap-2 text-lg border-accent/50 hover:border-accent hover:bg-accent/10"
+              >
+                Read Full Article About Iodine
+                <ChevronDown className="w-5 h-5" />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-8">
+              <Card className="p-8 bg-card/50 backdrop-blur-sm border-accent/30">
+                <div className="prose prose-lg max-w-none text-foreground/90 space-y-4">
+                  <p>
+                    Iodine is an essential element. Although its main function is in the production of thyroid hormones by the thyroid gland, other organs in the body have a need for iodine in order to function normally. Iodine builds jing and chi.
+                  </p>
+                  <p>
+                    Several studies have demonstrated the relationship not only between iodine and the thyroid gland, but also between low iodine and fibrocystic disease of the breast (FDB), and breast cancer. Studies showed Japanese women living in Japan consumed a daily average of 13.8 mg of elemental iodine and then experienced one of the lowest risk for breast, ovarian, and uterine cancer (1 in 20).
+                  </p>
+                  <p>
+                    Iodine is the metabolic mineral. Iodine is very important for the thyroid and a variety of different glands and brain function. It prevents goiter and helps with cell metabolism. Iodine is very important in the body for the assimilation of the key minerals calcium, silica, chlorine, and fluorine. Iodine is important for brain function and teeth and bone metabolism. It is found also in high concentrations in the spleen, blood, saliva, perspiration, and tears. An excess of iodine will show up with the symptoms of nervousness and anxiousness, bulging eyeballs, and acute sense of touch. Psychological symptoms are fear of the future, oversensitivity, and nervous tremor. Signs of iodine deficiency can also include nervousness, but with increased cholesterol, weight gain, restlessness, slow mind, slow metabolism, fearfulness, goiter, awkwardness, much mucus, and heart and lung difficulties.
+                  </p>
+                  <p>
+                    Iodine seems to work as a monitor, or controller, for calcium metabolism. It's one of the key minerals. Iodine has the highest frequency of all of Nature's essential minerals. It supports enzyme systems that help the functioning of certain thyroid hormones and assists in regulating cellular metabolic rates. It may be helpful in protecting against breast cancer. It is important for normal mental and physical development in children because of the importance of normal thyroid in a child's growth and development. Lack of iodine may also be associated with retarded growth in children, poor bone development, bad teeth, and dull mental functioning.
+                  </p>
+                  <p>
+                    As far back as 1915, as many as 90 percent of the American population were considered deficient in iodine. Iodine appears to be one of the minerals that get burned up by stress, and so whenever there's anxiety, tension, and depression, there may be a need for iodine. Iodine acts in the body as a cleanser. It protects the brain by destroying toxins in the blood before it passes the blood brain barrier and increases the assimilation of salts for normal metabolism. Iodine, because it is water-soluble, works with the lymph, travels to every cell in the body, works as a disinfectant, balances the metabolism, and creates electrical balance in the body. It is best to think about the minerals in synergistic patterns. Iodine is a very good example of that because these key elements work in patterns to make the organs and tissue work in an optimal way. The pattern is just a little bit different for each person. An example of this is cataracts, which seem to be connected to calcium being pulled out of the pattern because of a lack of iodine. Iodine also works in relationship with phosphorous to activate the brain's clarity. Dulse may be a better choice for supplying iodine than kelp because dulse has a little bit more manganese than kelp, and manganese is an important element for the functioning of iodine in the system.
+                  </p>
+                  <p>
+                    The foods richest in iodine are dulse and kelp. All sea vegetables basically contain all of the minerals of the sea, bringing us a good source of trace minerals in general. Besides kelp and dulse, the foods that are high in iodine are asparagus, blueberries, Brussels sprouts, cardamom, carrots, chervil, chives, coconuts, cucumbers, eggplant, garlic, green peppers, kale, leaf lettuce, loganberries, mustard greens, okra, oats, onions, potatoes, rutabaga, all the sea vegetables, spinach, squash, strawberries, Swiss chard, tomatoes, and watermelon.
+                  </p>
+                </div>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Illumodine Now
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Benefits Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-background via-secondary/20 to-background">
         <div className="max-w-6xl mx-auto">
@@ -107,6 +261,16 @@ const Landing = () => {
               </p>
             </div>
           </Card>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Order Your Illumodine Today
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -144,6 +308,16 @@ const Landing = () => {
               </ul>
             </Card>
           </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Start Your Journey to Wellness
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -158,12 +332,23 @@ const Landing = () => {
           </p>
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)]">
+            <Card className="p-8 bg-card/70 backdrop-blur-sm border-accent/50 shadow-[0_0_30px_hsl(45_95%_60%/0.2)] relative overflow-visible h-full flex flex-col">
+              <BlackFridayRibbon enabled={showBlackFridayRibbons} position="top-left" />
               <div className="text-accent text-6xl font-bold mb-4">$29</div>
               <h3 className="text-2xl font-bold mb-4 text-foreground">Starter Size</h3>
+              
+              {/* Bottle Image */}
+              <div className="flex justify-center mb-4">
+                <img 
+                  src={bottleSmall} 
+                  alt="Illumodine 0.5oz bottle" 
+                  className="h-24 w-auto drop-shadow-lg"
+                />
+              </div>
+              
               <p className="text-lg mb-4 text-accent">0.5 fl oz (15ml) Bottle</p>
               <p className="text-foreground/80 mb-6">+ FREE Shipping (US Only)</p>
-              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+              <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
                   Perfect for trying Illumodine™
@@ -179,8 +364,9 @@ const Landing = () => {
               </ul>
             </Card>
 
-            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative">
-              <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold">
+            <Card className="p-8 bg-gradient-to-br from-accent/10 to-card/70 backdrop-blur-sm border-accent shadow-[0_0_40px_hsl(45_95%_60%/0.3)] relative overflow-visible h-full flex flex-col">
+              <BlackFridayRibbon enabled={showBlackFridayRibbons} position="top-left" />
+              <div className="absolute -top-4 right-4 bg-accent text-accent-foreground px-4 py-1 rounded-full font-bold text-sm z-20">
                 BEST VALUE
               </div>
               <div className="text-accent text-6xl font-bold mb-4">$114</div>
@@ -202,8 +388,9 @@ const Landing = () => {
               </div>
               
               <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
-              <p className="text-foreground/80 mb-6">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
-              <ul className="text-left space-y-2 mb-6 text-foreground/90">
+              <p className="text-foreground/80 mb-4">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
+              <p className="text-sm text-accent/80 mb-6 font-semibold">(2.5 fl oz total)</p>
+              <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
                   Maximum savings per dose
@@ -230,6 +417,65 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            What Our Customers Say
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12">
+            Real results from real people
+          </p>
+          
+          <Carousel className="w-full max-w-4xl mx-auto">
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index}>
+                  <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30 h-full flex flex-col">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-accent">{testimonial.title}</h3>
+                    <p className="text-lg text-foreground/90 mb-6 italic flex-grow">
+                      "{testimonial.text}"
+                    </p>
+                    <div className="space-y-2">
+                      <p className="text-foreground font-semibold">— {testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">Verified Buyer by Yotpo</p>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2 md:-left-12" />
+            <CarouselNext className="right-2 md:-right-12" />
+          </Carousel>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/checkout')}
+              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Join Thousands of Happy Customers
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Banner Section - Moved to end */}
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-primary/30 via-secondary/40 to-background">
+        <div className="max-w-7xl mx-auto">
+          <img 
+            src={heroBanner} 
+            alt="Illumodine - The best Iodine in the world!" 
+            className="w-full h-auto object-cover rounded-lg shadow-2xl"
+          />
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border/50">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
@@ -242,6 +488,69 @@ const Landing = () => {
     </div>
   );
 };
+
+const testimonials = [
+  {
+    title: "Excellent!",
+    text: "I was pretty sure I was struggling with some thyroid issues prior to trying this but was also interested in the detoxifying effects Dr Cousens spoke about regarding this supplement. Within just over a week, my chronic fatigue and pain diminished by around 40%. I haven't felt this clear, comfortable, and energetic in years. Very thrilled so far. Thank you!",
+    name: "Dorothy"
+  },
+  {
+    title: "Excellent Iodine supplement",
+    text: "Excellent Iodine supplement that does more than just provide the body with iodine. A great product for daily use and during a detox fast.",
+    name: "Jennifer L."
+  },
+  {
+    title: "excellent protection",
+    text: "excellent product, despite a compromised immune system i have only gotten sick once in more than a decade.",
+    name: "Giselle M."
+  },
+  {
+    title: "TOP !",
+    text: "I take it daily (1-2 drops). I would not want to be without it. One of the most impactful and multifaceted elements you can take. Helps me energize when I take it during the day and helps me get back to sleep when I take it at night when I get up.",
+    name: "Chris G."
+  },
+  {
+    title: "Love this stuff",
+    text: "I take this every day it's so helpful to my mental health, among other things",
+    name: "Laura H."
+  },
+  {
+    title: "Liquid Iodine",
+    text: "best ever Iodine supplement I have ever tried",
+    name: "Mira B."
+  },
+  {
+    title: "Iodine I can trust",
+    text: "very pleased with the product. When I read the instructions, I made up a calendar to begin the titering. Today I'm happy to say, I'm enjoying a brighter mind, retaining information and not struggling to carry on a conversation after 4 p.m. On December 17th, I'll go to the maintenance dose. Thank you!",
+    name: "Patricia M."
+  },
+  {
+    title: "Awesome Iodine",
+    text: "The best and highly-potent iodine I have encountered. Massive detox effect that boosts clarity and mental and other capabilities.",
+    name: "Vikentiy M."
+  },
+  {
+    title: "Most Important Supplement We Take",
+    text: "This is a daily must for us! If we could only take one thing, it'd be Illumodine.",
+    name: "Judy B."
+  },
+  {
+    title: "Amazing",
+    text: "Amazing supplement! Something I will take for the rest of my life!",
+    name: "Vivianne N."
+  },
+  {
+    title: "Illumodine",
+    text: "This is an excellent product. My annual health test for iodine has now perfect for several years.",
+    name: "Stella A."
+  },
+  {
+    title: "Best Iodine!",
+    text: "Dr Cousens iodine is potent! I definitely feel better when I take it!",
+    name: "Stephanie B."
+  }
+];
 
 const benefits = [
   "Powerful antioxidant – 3,000x more effective than normal tissue at absorbing radiation",
