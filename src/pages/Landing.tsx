@@ -23,14 +23,14 @@ const Landing = () => {
         </a>
       </div>
       
-      {/* Hero Banner Section */}
-      <section className="relative overflow-hidden">
-        <img 
-          src={heroBanner} 
-          alt="Illumodine - The best Iodine in the world!" 
-          className="w-full h-auto object-cover"
-        />
-      </section>
+      {/* Black Friday Banner */}
+      {showBlackFridayRibbons && (
+        <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
+          <p className="text-lg md:text-xl font-bold tracking-wide">
+            🔥 BLACK FRIDAY SPECIAL - Limited Time Offer! 🔥
+          </p>
+        </div>
+      )}
       
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[600px] flex items-center">
@@ -279,6 +279,17 @@ const Landing = () => {
             </p>
             <p className="text-foreground font-semibold">— Dorothy</p>
           </Card>
+        </div>
+      </section>
+
+      {/* Hero Banner Section - Moved to end */}
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-primary/30 via-secondary/40 to-background">
+        <div className="max-w-7xl mx-auto">
+          <img 
+            src={heroBanner} 
+            alt="Illumodine - The best Iodine in the world!" 
+            className="w-full h-auto object-cover rounded-lg shadow-2xl"
+          />
         </div>
       </section>
 
