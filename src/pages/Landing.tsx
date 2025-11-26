@@ -28,8 +28,8 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Logo */}
-      <div className="absolute top-6 left-6 z-10">
+      {/* Logo - positioned below banner when Black Friday is active */}
+      <div className={`absolute ${showBlackFridayRibbons ? 'top-[76px]' : 'top-6'} left-6 z-10 transition-all duration-300`}>
         <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
           <img src={logo} alt="HolisticPeople" className="h-12 brightness-0 invert opacity-60 hover:opacity-90 transition-opacity" style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(12%) saturate(892%) hue-rotate(211deg) brightness(93%) contrast(87%)' }} />
         </a>

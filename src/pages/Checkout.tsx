@@ -351,8 +351,9 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                <div className="flex items-center gap-6">
-                  <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto" />
+                {/* Mobile & Desktop unified layout */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                  <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto sm:flex-shrink-0" />
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-foreground mb-1">Starter Size</h3>
                     <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
@@ -385,12 +386,15 @@ const Checkout = () => {
                   <div className="flex-shrink-0">
                     {/* Mobile Layout */}
                     <div className="sm:hidden space-y-2">
+                      {/* Heading at top for mobile */}
+                      <h3 className="text-xl font-bold text-foreground mb-2">Value Pack</h3>
+                      
                       {/* Large Bottle */}
                       <div className="flex items-center gap-4">
                         <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
                         <div className="text-left">
                           <p className="text-sm text-accent font-semibold">2 fl oz / 60ml</p>
-                          <p className="text-base font-bold text-accent">$114</p>
+                          <p className="text-2xl font-bold text-accent">$114</p>
                         </div>
                       </div>
                       
@@ -405,6 +409,12 @@ const Checkout = () => {
                           <p className="text-base font-bold text-accent">FREE</p>
                         </div>
                       </div>
+                      
+                      {/* Total info */}
+                      <div className="space-y-1 mt-3 pt-3 border-t border-accent/20">
+                        <p className="text-sm text-accent/90 font-semibold">Total: 2.5 fl oz / 75ml</p>
+                        <p className="text-sm text-muted-foreground">FREE Shipping (US)</p>
+                      </div>
                     </div>
                     
                     {/* Desktop Layout */}
@@ -415,26 +425,16 @@ const Checkout = () => {
                     </div>
                   </div>
                   
-                  {/* Text Section */}
-                  <div className="flex-1">
+                  {/* Text Section - Desktop only */}
+                  <div className="hidden sm:block flex-1">
                     <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
-                    
-                    {/* Mobile: Show total info */}
-                    <div className="sm:hidden space-y-1 mb-3 pb-3 border-b border-accent/20">
-                      <p className="text-sm text-accent/90 font-semibold">Total: 2.5 fl oz / 75ml</p>
-                      <p className="text-sm text-muted-foreground">FREE Shipping (US)</p>
-                    </div>
-                    
-                    {/* Desktop: Show detailed info */}
-                    <div className="hidden sm:block">
-                      <p className="text-accent font-semibold">2 fl oz (60ml)</p>
-                      <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
-                      <p className="text-sm text-accent/80 font-semibold">(2.5 fl oz total)</p>
-                      <p className="text-2xl font-bold text-accent mt-2">
-                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
-                      </p>
-                      <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
-                    </div>
+                    <p className="text-accent font-semibold">2 fl oz (60ml)</p>
+                    <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
+                    <p className="text-sm text-accent/80 font-semibold">(2.5 fl oz total)</p>
+                    <p className="text-2xl font-bold text-accent mt-2">
+                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
+                    </p>
+                    <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
                 </div>
               </div>
