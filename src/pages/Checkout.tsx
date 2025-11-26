@@ -37,7 +37,7 @@ const Checkout = () => {
   const { toast } = useToast();
   const { getPrice, loading: pricesLoading } = usePrices();
 
-  const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("small");
+  const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("large");
   const [quantity, setQuantity] = useState(1);
 
   // Form state
@@ -351,16 +351,23 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                {/* Mobile & Desktop unified layout */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                  <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto sm:flex-shrink-0" />
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-foreground mb-1">Starter Size</h3>
-                    <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
-                    <p className="text-2xl font-bold text-accent mt-2">
-                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                {/* Mobile: heading on top, Desktop: side by side */}
+                <div className="space-y-4 sm:space-y-0">
+                  {/* Mobile heading */}
+                  <h3 className="text-xl font-bold text-foreground sm:hidden">Starter Size</h3>
+                  
+                  {/* Content section */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                    <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto sm:flex-shrink-0" />
+                    <div className="flex-1">
+                      {/* Desktop heading */}
+                      <h3 className="hidden sm:block text-xl font-bold text-foreground mb-1">Starter Size</h3>
+                      <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
+                      <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
+                      </p>
+                      <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                    </div>
                   </div>
                 </div>
               </div>
