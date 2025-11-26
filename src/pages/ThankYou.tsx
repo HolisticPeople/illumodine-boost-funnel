@@ -5,10 +5,12 @@ import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/holisticpeople-logo.png";
 import { bridge, OrderSummary } from "@/api/bridge";
+import { usePrices } from "@/context/PricesContext";
 
 const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { getPrice } = usePrices();
   
   const [order, setOrder] = useState<OrderSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,7 +143,13 @@ const ThankYou = () => {
             <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
             
             <div className="space-y-4">
-              {order.items.map((item, i) => (
+              {order.items.map((item, i) => {
+                // For free 0.5oz bottles, show actual price instead of $0
+                const displayPrice = item.total === 0 && item.sku === "HG-Illum05" 
+                  ? getPrice("HG-Illum05") * item.qty
+                  : item.total;
+                
+                return (
                   <div key={i} className="flex justify-between items-start pb-4 border-b last:border-0">
                     <div className="flex items-start gap-3">
                          {item.image && <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded" />}
@@ -151,18 +159,24 @@ const ThankYou = () => {
                          </div>
                     </div>
                     <div className="text-right">
-                        <p className="font-semibold text-lg">${item.total.toFixed(2)}</p>
-                        {item.subtotal > item.total && (
+                        <p className="font-semibold text-lg">${displayPrice.toFixed(2)}</p>
+                        {item.subtotal > item.total && item.total !== 0 && (
                             <p className="text-xs text-green-600 line-through">${item.subtotal.toFixed(2)}</p>
                         )}
                     </div>
                   </div>
-              ))}
+                );
+              })}
 
               <div className="pt-2 space-y-2">
                 <div className="flex justify-between items-center">
                     <p className="text-muted-foreground">Subtotal</p>
-                    <p className="font-medium">${(order.grand_total - order.shipping_total - order.fees_total + order.items_discount).toFixed(2)}</p>
+                    <p className="font-medium">${order.items.reduce((sum, item) => {
+                      const displayPrice = item.total === 0 && item.sku === "HG-Illum05" 
+                        ? getPrice("HG-Illum05") * item.qty
+                        : item.total;
+                      return sum + displayPrice;
+                    }, 0).toFixed(2)}</p>
                 </div>
                 {order.items_discount > 0 && (
                      <div className="flex justify-between items-center text-green-600">
