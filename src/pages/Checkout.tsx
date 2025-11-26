@@ -671,7 +671,7 @@ const Checkout = () => {
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="text-accent hover:text-accent/80"
+            className="text-accent hover:text-foreground hover:bg-accent/20"
           >
             ← Back to Product Information
           </Button>
