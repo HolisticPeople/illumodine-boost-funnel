@@ -368,8 +368,12 @@ const Checkout = () => {
                 <div className="absolute -top-3 right-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
                   BEST VALUE
                 </div>
-                <div className="flex items-center gap-6">
-                  <img src={bottleLarge} alt="2oz bottle" className="w-24 h-auto" />
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-2">
+                    <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
+                    <div className="text-2xl font-bold text-accent">+</div>
+                    <img src={bottleSmall} alt="Free 0.5oz bottle" className="w-14 h-auto" />
+                  </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
                     <p className="text-accent font-semibold">2 fl oz (60ml)</p>

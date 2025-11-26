@@ -76,7 +76,7 @@ const Landing = () => {
               <Button 
                 size="lg" 
                 onClick={handleGoToCheckout}
-                className="hidden md:flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300 mt-8"
+                className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300 mt-8"
               >
                 Get Your Special Offer Now
               </Button>
@@ -133,6 +133,16 @@ const Landing = () => {
               </p>
             </div>
           </Card>
+          
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={handleGoToCheckout}
+              className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Special Offer Now
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -171,6 +181,16 @@ const Landing = () => {
             <CarouselPrevious className="left-2 md:-left-12" />
             <CarouselNext className="right-2 md:-right-12" />
           </Carousel>
+          
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={handleGoToCheckout}
+              className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Special Offer Now
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -294,6 +314,16 @@ const Landing = () => {
               </Card>
             </CollapsibleContent>
           </Collapsible>
+          
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={handleGoToCheckout}
+              className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Special Offer Now
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -330,6 +360,16 @@ const Landing = () => {
                 <li>• Supports DNA repair and healthy apoptosis</li>
               </ul>
             </Card>
+          </div>
+          
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={handleGoToCheckout}
+              className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            >
+              Get Your Special Offer Now
+            </Button>
           </div>
         </div>
       </section>
@@ -386,13 +426,13 @@ const Landing = () => {
               <h3 className="text-2xl font-bold mb-4 text-foreground">Value Pack</h3>
               
               {/* Show both bottles */}
-              <div className="flex justify-center items-end gap-4 mb-4">
+              <div className="flex justify-center items-center gap-4 mb-4">
                 <img 
                   src={bottleLarge} 
                   alt="ILLUMODINE 2oz bottle" 
                   className="h-32 w-auto drop-shadow-lg"
                 />
-                <div className="text-3xl font-bold text-accent flex items-center pb-4">+</div>
+                <div className="text-3xl font-bold text-accent">+</div>
                 <img 
                   src={bottleSmall} 
                   alt="Free ILLUMODINE 0.5oz bottle" 
@@ -423,7 +463,7 @@ const Landing = () => {
           <Button 
             size="lg" 
             onClick={handleGoToCheckout}
-            className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+            className="hidden md:inline-flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
           >
             Claim Your Special Offer Now
           </Button>
