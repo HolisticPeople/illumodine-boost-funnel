@@ -28,16 +28,16 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Logo */}
-      <div className="absolute top-6 left-6 z-10">
+      {/* Logo - positioned below banner when Black Friday is active */}
+      <div className={`absolute ${showBlackFridayRibbons ? 'top-[76px]' : 'top-6'} left-6 z-10 transition-all duration-300`}>
         <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
-          <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
+          <img src={logo} alt="HolisticPeople" className="h-12 brightness-0 invert opacity-60 hover:opacity-90 transition-opacity" style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(12%) saturate(892%) hue-rotate(211deg) brightness(93%) contrast(87%)' }} />
         </a>
       </div>
       
       {/* Black Friday Banner */}
       {showBlackFridayRibbons && (
-        <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
+        <div className="bg-gradient-to-r from-rose-700 via-rose-600 to-rose-700 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
           <p className="text-lg md:text-xl font-bold tracking-wide">
             🔥 BLACK FRIDAY SPECIAL - Limited Time Offer! 🔥
           </p>
@@ -65,7 +65,7 @@ const Landing = () => {
                 ILLUMODINE™
               </h1>
               <p className="text-3xl md:text-4xl font-semibold text-accent/90">
-                The best Iodine supplement in the world!
+                The best Iodine supplement!
               </p>
               <p className="text-xl md:text-2xl text-foreground/90">
                 Pure, High-Potency Iodine Supplement
@@ -425,24 +425,69 @@ const Landing = () => {
               <div className="text-accent text-6xl font-bold mb-4">$114</div>
               <h3 className="text-2xl font-bold mb-4 text-foreground">Value Pack</h3>
               
-              {/* Show both bottles */}
-              <div className="flex justify-center items-center gap-4 mb-4">
-                <img 
-                  src={bottleLarge} 
-                  alt="ILLUMODINE 2oz bottle" 
-                  className="h-32 w-auto drop-shadow-lg"
-                />
-                <div className="text-3xl font-bold text-accent">+</div>
-                <img 
-                  src={bottleSmall} 
-                  alt="Free ILLUMODINE 0.5oz bottle" 
-                  className="h-20 w-auto drop-shadow-lg"
-                />
+              {/* Mobile: Vertical stack, Desktop: Horizontal */}
+              <div className="mb-4">
+                {/* Mobile Layout */}
+                <div className="md:hidden space-y-3">
+                  {/* Large Bottle Row */}
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={bottleLarge} 
+                      alt="ILLUMODINE 2oz bottle" 
+                      className="h-24 w-auto drop-shadow-lg flex-shrink-0"
+                    />
+                    <div className="text-left">
+                      <p className="text-base text-accent font-semibold">2 fl oz / 60ml</p>
+                      <p className="text-lg font-bold text-accent">$114</p>
+                    </div>
+                  </div>
+                  
+                  {/* Plus Sign */}
+                  <div className="text-2xl font-bold text-accent text-center">+</div>
+                  
+                  {/* Small Bottle Row */}
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={bottleSmall} 
+                      alt="Free ILLUMODINE 0.5oz bottle" 
+                      className="h-24 w-auto drop-shadow-lg flex-shrink-0"
+                    />
+                    <div className="text-left">
+                      <p className="text-base text-accent font-semibold">0.5 fl oz / 15ml</p>
+                      <p className="text-lg font-bold text-accent">FREE</p>
+                    </div>
+                  </div>
+                  
+                  {/* Total Info */}
+                  <div className="pt-3 border-t border-accent/30 space-y-1">
+                    <p className="text-sm text-accent/90 font-semibold">Total: 2.5 fl oz / 75ml</p>
+                    <p className="text-sm text-foreground/80">FREE Shipping (US)</p>
+                  </div>
+                </div>
+                
+                {/* Desktop Layout */}
+                <div className="hidden md:flex justify-center items-center gap-4">
+                  <img 
+                    src={bottleLarge} 
+                    alt="ILLUMODINE 2oz bottle" 
+                    className="h-32 w-auto drop-shadow-lg"
+                  />
+                  <div className="text-3xl font-bold text-accent">+</div>
+                  <img 
+                    src={bottleSmall} 
+                    alt="Free ILLUMODINE 0.5oz bottle" 
+                    className="h-20 w-auto drop-shadow-lg"
+                  />
+                </div>
               </div>
               
-              <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
-              <p className="text-foreground/80 mb-4">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
-              <p className="text-sm text-accent/80 mb-6 font-semibold">(2.5 fl oz total)</p>
+              {/* Desktop Text */}
+              <div className="hidden md:block">
+                <p className="text-lg mb-2 text-accent font-semibold">2 fl oz (60ml) Bottle</p>
+                <p className="text-foreground/80 mb-4">+ FREE 0.5oz Bottle + FREE Shipping (US Only)</p>
+                <p className="text-sm text-accent/80 mb-6 font-semibold">(2.5 fl oz total)</p>
+              </div>
+              
               <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
@@ -471,7 +516,7 @@ const Landing = () => {
       </section>
 
       {/* Floating CTA Button - Mobile Only */}
-      <div className="md:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+      <div className="md:hidden fixed bottom-3 left-1/2 transform -translate-x-1/2 z-50">
         <Button 
           size="lg" 
           onClick={handleGoToCheckout}
@@ -486,7 +531,7 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <img 
             src={heroBanner} 
-            alt="ILLUMODINE - The best Iodine supplement in the world!" 
+            alt="ILLUMODINE - The best Iodine supplement!" 
             className="w-full h-auto object-cover rounded-lg shadow-2xl"
           />
         </div>

@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     base: env.VITE_APP_BASEPATH || "/",
+    publicDir: 'public', // Explicitly set public directory
     server: {
       host: "::",
       port: 8080,

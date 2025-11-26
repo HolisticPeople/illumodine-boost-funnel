@@ -16,6 +16,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { COUNTRIES, countryNameFor, countryRequiresState } from "@/data/countries";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 // Get Products (static lookups)
 const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
@@ -27,7 +37,7 @@ const Checkout = () => {
   const { toast } = useToast();
   const { getPrice, loading: pricesLoading } = usePrices();
 
-  const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("small");
+  const [selectedOffer, setSelectedOffer] = useState<"small" | "large">("large");
   const [quantity, setQuantity] = useState(1);
 
   // Form state
@@ -310,7 +320,7 @@ const Checkout = () => {
         {/* Logo */}
         <div className="mb-8">
           <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
-            <img src={logo} alt="HolisticPeople" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />
+            <img src={logo} alt="HolisticPeople" className="h-12 brightness-0 invert opacity-60 hover:opacity-90 transition-opacity" style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(12%) saturate(892%) hue-rotate(211deg) brightness(93%) contrast(87%)' }} />
           </a>
         </div>
 
@@ -341,15 +351,19 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                <div className="flex items-center gap-6">
-                  <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto" />
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-foreground mb-1">Starter Size</h3>
-                    <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
-                    <p className="text-2xl font-bold text-accent mt-2">
-                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                {/* Heading above, then image and text side by side */}
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-xl font-bold text-foreground">Starter Size</h3>
+                  
+                  <div className="flex items-center gap-4 sm:gap-6">
+                    <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
+                      <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
+                      </p>
+                      <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -368,20 +382,29 @@ const Checkout = () => {
                 <div className="absolute -top-3 right-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
                   BEST VALUE
                 </div>
-                <div className="flex flex-col sm:flex-row items-start gap-4">
-                  <div className="flex items-center justify-center gap-2 w-full sm:w-auto">
-                    <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
-                    <div className="text-2xl font-bold text-accent">+</div>
-                    <img src={bottleSmall} alt="Free 0.5oz bottle" className="w-14 h-auto" />
-                  </div>
-                  <div className="flex-1 text-center sm:text-left">
-                    <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
-                    <p className="text-accent font-semibold">2 fl oz (60ml)</p>
-                    <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
-                    <p className="text-2xl font-bold text-accent mt-2">
-                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                
+                {/* Heading above, then images and text side by side */}
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-xl font-bold text-foreground">Value Pack</h3>
+                  
+                  <div className="flex items-center gap-4 sm:gap-6">
+                    {/* Bottles display - vertical stack on all screens */}
+                    <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                      <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
+                      <span className="text-accent font-bold text-2xl">+</span>
+                      <img src={bottleSmall} alt="0.5oz bottle" className="w-16 h-auto" />
+                    </div>
+                    
+                    {/* Text content */}
+                    <div className="flex-1">
+                      <p className="text-accent font-semibold">2 fl oz (60ml)</p>
+                      <p className="text-accent font-semibold">+ FREE 0.5oz Bottle</p>
+                      <p className="text-sm text-muted-foreground">(2.5 fl oz total)</p>
+                      <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
+                      </p>
+                      <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -660,7 +683,27 @@ const Checkout = () => {
               </form>
 
               <p className="text-xs text-muted-foreground text-center mt-4">
-                By completing this purchase, you agree to our terms and conditions.
+                By completing this purchase, you agree to our terms and conditions. {" "}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button className="text-xs text-muted-foreground underline hover:text-foreground transition-colors">
+                      Existing HolisticPeople Members
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Existing HolisticPeople Members</AlertDialogTitle>
+                      <AlertDialogDescription className="text-foreground/90">
+                        Your order will be available in your account at holisticpeople.com using the same email address you provided during checkout.
+                        <br /><br />
+                        Please note that for express deals such as this, loyalty points are not granted nor can they be redeemed. This is a tailored offer with no double or overlapping discounts.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogAction>Understood</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </p>
             </Card>
           </div>
