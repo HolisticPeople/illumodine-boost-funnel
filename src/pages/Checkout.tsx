@@ -477,9 +477,9 @@ const Checkout = () => {
                 </div>
 
                 {selectedOffer === "large" && (
-                  <div className="flex justify-between text-accent">
-                    <span>FREE 0.5oz Bottle × {quantity}</span>
-                    <span className="font-semibold">$0</span>
+                  <div className="flex justify-between text-foreground">
+                    <span>0.5oz Bottle × {quantity}</span>
+                    <span className="font-semibold">${(priceSmall * quantity).toFixed(2)}</span>
                   </div>
                 )}
 
@@ -724,7 +724,10 @@ const Checkout = () => {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border/50 mt-12">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
-          <p className="mb-2">© 2024 HolisticPeople.com - Manufactured for Dr. Gabriel Cousens</p>
+          <p className="mb-3">
+            Questions? <a href="https://holisticpeople.com/contact-us/" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent/80 transition-colors underline">Contact Us</a>
+          </p>
+          <p className="mb-2">© 2010-2025 HolisticPeople.com - Manufactured for Dr. Gabriel Cousens</p>
           <p className="text-xs">
             These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure or prevent any disease.
           </p>
