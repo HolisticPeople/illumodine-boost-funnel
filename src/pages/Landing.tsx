@@ -37,7 +37,7 @@ const Landing = () => {
       
       {/* Black Friday Banner */}
       {showBlackFridayRibbons && (
-        <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
+        <div className="bg-gradient-to-r from-rose-700 via-rose-600 to-rose-700 text-white py-3 text-center sticky top-0 z-30 shadow-lg">
           <p className="text-lg md:text-xl font-bold tracking-wide">
             🔥 BLACK FRIDAY SPECIAL - Limited Time Offer! 🔥
           </p>
@@ -65,7 +65,7 @@ const Landing = () => {
                 ILLUMODINE™
               </h1>
               <p className="text-3xl md:text-4xl font-semibold text-accent/90">
-                The best Iodine supplement in the world!
+                The best Iodine supplement!
               </p>
               <p className="text-xl md:text-2xl text-foreground/90">
                 Pure, High-Potency Iodine Supplement
@@ -486,7 +486,7 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <img 
             src={heroBanner} 
-            alt="ILLUMODINE - The best Iodine supplement in the world!" 
+            alt="ILLUMODINE - The best Iodine supplement!" 
             className="w-full h-auto object-cover rounded-lg shadow-2xl"
           />
         </div>

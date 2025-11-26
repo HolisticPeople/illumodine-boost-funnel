@@ -16,6 +16,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { COUNTRIES, countryNameFor, countryRequiresState } from "@/data/countries";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 // Get Products (static lookups)
 const smallProduct = ILLUMODINE_PRODUCTS.find(p => p.id === "small");
@@ -378,6 +388,7 @@ const Checkout = () => {
                     <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
                     <p className="text-accent font-semibold">2 fl oz (60ml)</p>
                     <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
+                    <p className="text-sm text-accent/80 font-semibold">(2.5 fl oz total)</p>
                     <p className="text-2xl font-bold text-accent mt-2">
                       {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
                     </p>
@@ -660,7 +671,27 @@ const Checkout = () => {
               </form>
 
               <p className="text-xs text-muted-foreground text-center mt-4">
-                By completing this purchase, you agree to our terms and conditions.
+                By completing this purchase, you agree to our terms and conditions. {" "}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button className="text-xs text-muted-foreground underline hover:text-foreground transition-colors">
+                      Existing HolisticPeople Members
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Existing HolisticPeople Members</AlertDialogTitle>
+                      <AlertDialogDescription className="text-foreground/90">
+                        Your order will be available in your account at holisticpeople.com using the same email address you provided during checkout.
+                        <br /><br />
+                        Please note that for express deals such as this, loyalty points are not granted nor can they be redeemed. This is a tailored offer with no double or overlapping discounts.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogAction>Understood</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </p>
             </Card>
           </div>
