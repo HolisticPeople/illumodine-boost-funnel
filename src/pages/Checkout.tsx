@@ -387,9 +387,9 @@ const Checkout = () => {
                 <div className="flex flex-col gap-4">
                   <h3 className="text-xl font-bold text-foreground">Value Pack</h3>
                   
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                    {/* Bottles display - vertical on mobile, horizontal on desktop */}
-                    <div className="flex flex-col sm:flex-row items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-4 sm:gap-6">
+                    {/* Bottles display - vertical stack on all screens */}
+                    <div className="flex flex-col items-center gap-2 flex-shrink-0">
                       <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
                       <span className="text-accent font-bold text-2xl">+</span>
                       <img src={bottleSmall} alt="0.5oz bottle" className="w-16 h-auto" />
