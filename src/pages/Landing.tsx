@@ -21,8 +21,13 @@ const Landing = () => {
   // Set to false to hide Black Friday ribbons
   const showBlackFridayRibbons = true;
 
+  const handleGoToCheckout = () => {
+    navigate('/checkout');
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       {/* Logo */}
       <div className="absolute top-6 left-6 z-10">
         <a href="https://holisticpeople.com" target="_blank" rel="noopener noreferrer">
@@ -57,10 +62,10 @@ const Landing = () => {
             {/* Left: Text Content */}
             <div className="text-left space-y-6">
               <h1 className="text-5xl md:text-7xl font-bold text-accent drop-shadow-[0_0_30px_hsl(45_95%_60%/0.5)]">
-                Illumodine™
+                ILLUMODINE™
               </h1>
               <p className="text-3xl md:text-4xl font-semibold text-accent/90">
-                The best Iodine in the world!
+                The best Iodine supplement in the world!
               </p>
               <p className="text-xl md:text-2xl text-foreground/90">
                 Pure, High-Potency Iodine Supplement
@@ -70,8 +75,8 @@ const Landing = () => {
               </p>
               <Button 
                 size="lg" 
-                onClick={() => navigate('/checkout')}
-                className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300 mt-8"
+                onClick={handleGoToCheckout}
+                className="hidden md:flex bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300 mt-8"
               >
                 Get Your Special Offer Now
               </Button>
@@ -82,11 +87,90 @@ const Landing = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-primary/30 to-accent/20 rounded-full blur-3xl scale-75" />
               <img 
                 src={bottleLarge} 
-                alt="Illumodine 2oz bottle" 
+                alt="ILLUMODINE 2oz bottle" 
                 className="relative w-full max-w-md h-auto drop-shadow-[0_0_40px_hsl(45_95%_60%/0.6)]"
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-background via-secondary/20 to-background">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            Why ILLUMODINE™?
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
+            Experience the power of 100% bioactive iodine (I⁻) – the most ancient and powerful antioxidant on Earth
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {benefits.map((benefit, index) => (
+              <Card key={index} className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-[0_0_20px_hsl(45_95%_60%/0.2)]">
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
+                  <p className="text-foreground">{benefit}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="p-8 md:p-12 bg-gradient-to-br from-secondary/50 to-card/50 backdrop-blur-sm border-accent/30">
+            <h3 className="text-3xl font-bold mb-6 text-accent">What Makes ILLUMODINE™ Superior?</h3>
+            <div className="space-y-4 text-foreground/90">
+              <p>
+                <strong className="text-accent">100% Bioactive Iodine (I⁻):</strong> ILLUMODINE™ contains singlet iodine atoms in their most bioavailable form, ensuring maximum absorption and effectiveness.
+              </p>
+              <p>
+                <strong className="text-accent">True Scalar Energy™ Charged:</strong> Through a proprietary process using beyond-quantum science, ILLUMODINE™ is charged with the highest frequency available to humanity, dramatically enhancing its bioavailability and effectiveness.
+              </p>
+              <p>
+                <strong className="text-accent">Extreme Purity:</strong> Made with scalar-charged 200 proof, non-GMO grain alcohol and singlet iodine atoms – nothing else. No additives, no fillers, just pure potency.
+              </p>
+              <p>
+                <strong className="text-accent">Developed by Dr. Gabriel Cousens:</strong> With decades of research and hundreds of patients studied since 2011, Dr. Cousens has perfected this formulation for optimal brain function and whole-body health.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
+            What Our Customers Say
+          </h2>
+          <p className="text-xl text-center text-muted-foreground mb-12">
+            Real results from real people
+          </p>
+          
+          <Carousel className="w-full max-w-4xl mx-auto">
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index}>
+                  <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30 h-full flex flex-col">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-accent">{testimonial.title}</h3>
+                    <p className="text-lg text-foreground/90 mb-6 italic flex-grow">
+                      "{testimonial.text}"
+                    </p>
+                    <div className="space-y-2">
+                      <p className="text-foreground font-semibold">— {testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">Verified Buyer by Yotpo</p>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2 md:-left-12" />
+            <CarouselNext className="right-2 md:-right-12" />
+          </Carousel>
         </div>
       </section>
 
@@ -97,7 +181,7 @@ const Landing = () => {
             Meet Dr. Gabriel Cousens
           </h2>
           <p className="text-xl text-center text-muted-foreground mb-12">
-            The Creator of Illumodine™
+            The Creator of ILLUMODINE™
           </p>
 
           <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
@@ -137,7 +221,7 @@ const Landing = () => {
                     "Far more active... better absorbed, better utilized."
                   </blockquote>
                   <blockquote className="text-foreground/90 italic border-l-4 border-accent pl-4">
-                    "Illumodine is in the I-minus form... activated in that way."
+                    "ILLUMODINE is in the I-minus form... activated in that way."
                   </blockquote>
                 </div>
               </div>
@@ -210,75 +294,14 @@ const Landing = () => {
               </Card>
             </CollapsibleContent>
           </Collapsible>
-
-          <div className="text-center mt-12">
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/checkout')}
-              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
-            >
-              Get Your Illumodine Now
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-background via-secondary/20 to-background">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
-            Why Illumodine™?
-          </h2>
-          <p className="text-xl text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
-            Experience the power of 100% bioactive iodine (I⁻) – the most ancient and powerful antioxidant on Earth
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {benefits.map((benefit, index) => (
-              <Card key={index} className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-[0_0_20px_hsl(45_95%_60%/0.2)]">
-                <div className="flex items-start gap-3">
-                  <Check className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <p className="text-foreground">{benefit}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <Card className="p-8 md:p-12 bg-gradient-to-br from-secondary/50 to-card/50 backdrop-blur-sm border-accent/30">
-            <h3 className="text-3xl font-bold mb-6 text-accent">What Makes Illumodine™ Superior?</h3>
-            <div className="space-y-4 text-foreground/90">
-              <p>
-                <strong className="text-accent">100% Bioactive Iodine (I⁻):</strong> Illumodine™ contains singlet iodine atoms in their most bioavailable form, ensuring maximum absorption and effectiveness.
-              </p>
-              <p>
-                <strong className="text-accent">True Scalar Energy™ Charged:</strong> Through a proprietary process using beyond-quantum science, Illumodine™ is charged with the highest frequency available to humanity, dramatically enhancing its bioavailability and effectiveness.
-              </p>
-              <p>
-                <strong className="text-accent">Extreme Purity:</strong> Made with scalar-charged 200 proof, non-GMO grain alcohol and singlet iodine atoms – nothing else. No additives, no fillers, just pure potency.
-              </p>
-              <p>
-                <strong className="text-accent">Developed by Dr. Gabriel Cousens:</strong> With decades of research and hundreds of patients studied since 2011, Dr. Cousens has perfected this formulation for optimal brain function and whole-body health.
-              </p>
-            </div>
-          </Card>
-
-          <div className="text-center mt-12">
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/checkout')}
-              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
-            >
-              Order Your Illumodine Today
-            </Button>
-          </div>
         </div>
       </section>
 
       {/* Science Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gradient-to-b from-background via-secondary/20 to-background">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-accent">
-            The Science Behind Illumodine™
+            The Science Behind ILLUMODINE™
           </h2>
           
           <div className="grid md:grid-cols-2 gap-8">
@@ -308,16 +331,6 @@ const Landing = () => {
               </ul>
             </Card>
           </div>
-
-          <div className="text-center mt-12">
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/checkout')}
-              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
-            >
-              Start Your Journey to Wellness
-            </Button>
-          </div>
         </div>
       </section>
 
@@ -328,7 +341,7 @@ const Landing = () => {
             Limited Time Special Offer
           </h2>
           <p className="text-xl text-foreground/90 mb-8">
-            Experience the transformative power of Illumodine™ with our exclusive offers
+            Experience the transformative power of ILLUMODINE™ with our exclusive offers
           </p>
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -341,7 +354,7 @@ const Landing = () => {
               <div className="flex justify-center mb-4">
                 <img 
                   src={bottleSmall} 
-                  alt="Illumodine 0.5oz bottle" 
+                  alt="ILLUMODINE 0.5oz bottle" 
                   className="h-24 w-auto drop-shadow-lg"
                 />
               </div>
@@ -351,7 +364,7 @@ const Landing = () => {
               <ul className="text-left space-y-2 mb-6 text-foreground/90 flex-grow">
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
-                  Perfect for trying Illumodine™
+                  Perfect for trying ILLUMODINE™
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-accent" />
@@ -376,13 +389,13 @@ const Landing = () => {
               <div className="flex justify-center items-end gap-4 mb-4">
                 <img 
                   src={bottleLarge} 
-                  alt="Illumodine 2oz bottle" 
+                  alt="ILLUMODINE 2oz bottle" 
                   className="h-32 w-auto drop-shadow-lg"
                 />
                 <div className="text-3xl font-bold text-accent flex items-center pb-4">+</div>
                 <img 
                   src={bottleSmall} 
-                  alt="Free Illumodine 0.5oz bottle" 
+                  alt="Free ILLUMODINE 0.5oz bottle" 
                   className="h-20 w-auto drop-shadow-lg"
                 />
               </div>
@@ -409,7 +422,7 @@ const Landing = () => {
 
           <Button 
             size="lg" 
-            onClick={() => navigate('/checkout')}
+            onClick={handleGoToCheckout}
             className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
           >
             Claim Your Special Offer Now
@@ -417,60 +430,23 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-accent">
-            What Our Customers Say
-          </h2>
-          <p className="text-xl text-center text-muted-foreground mb-12">
-            Real results from real people
-          </p>
-          
-          <Carousel className="w-full max-w-4xl mx-auto">
-            <CarouselContent>
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index}>
-                  <Card className="p-8 bg-gradient-to-br from-card/80 to-secondary/30 backdrop-blur-sm border-accent/30 h-full flex flex-col">
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                      ))}
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4 text-accent">{testimonial.title}</h3>
-                    <p className="text-lg text-foreground/90 mb-6 italic flex-grow">
-                      "{testimonial.text}"
-                    </p>
-                    <div className="space-y-2">
-                      <p className="text-foreground font-semibold">— {testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">Verified Buyer by Yotpo</p>
-                    </div>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2 md:-left-12" />
-            <CarouselNext className="right-2 md:-right-12" />
-          </Carousel>
-
-          <div className="text-center mt-12">
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/checkout')}
-              className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-xl px-12 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
-            >
-              Join Thousands of Happy Customers
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Floating CTA Button - Mobile Only */}
+      <div className="md:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <Button 
+          size="lg" 
+          onClick={handleGoToCheckout}
+          className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-bold text-lg px-8 py-6 rounded-full shadow-[0_0_30px_hsl(45_95%_60%/0.5)] hover:shadow-[0_0_50px_hsl(45_95%_60%/0.7)] transition-all duration-300"
+        >
+          Get Special Offer
+        </Button>
+      </div>
 
       {/* Hero Banner Section - Moved to end */}
       <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-primary/30 via-secondary/40 to-background">
         <div className="max-w-7xl mx-auto">
           <img 
             src={heroBanner} 
-            alt="Illumodine - The best Iodine in the world!" 
+            alt="ILLUMODINE - The best Iodine supplement in the world!" 
             className="w-full h-auto object-cover rounded-lg shadow-2xl"
           />
         </div>
@@ -532,7 +508,7 @@ const testimonials = [
   },
   {
     title: "Most Important Supplement We Take",
-    text: "This is a daily must for us! If we could only take one thing, it'd be Illumodine.",
+    text: "This is a daily must for us! If we could only take one thing, it'd be ILLUMODINE.",
     name: "Judy B."
   },
   {
@@ -541,7 +517,7 @@ const testimonials = [
     name: "Vivianne N."
   },
   {
-    title: "Illumodine",
+    title: "ILLUMODINE",
     text: "This is an excellent product. My annual health test for iodine has now perfect for several years.",
     name: "Stella A."
   },
