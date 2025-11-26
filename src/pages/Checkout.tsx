@@ -351,12 +351,11 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                {/* Heading on top for both mobile and desktop */}
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-foreground">Starter Size</h3>
+                {/* Heading on left, then image and text side by side */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                  <h3 className="text-xl font-bold text-foreground sm:w-40 sm:flex-shrink-0">Starter Size</h3>
                   
-                  {/* Content: image and text side by side */}
-                  <div className="flex items-start gap-4 sm:gap-6 sm:pl-12">
+                  <div className="flex items-center gap-4 sm:gap-6 flex-1">
                     <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
@@ -384,61 +383,28 @@ const Checkout = () => {
                   BEST VALUE
                 </div>
                 
-                {/* Mobile: Vertical stack matching starter, Desktop: Side by side */}
-                <div className="space-y-4 sm:space-y-0 sm:flex sm:items-start sm:gap-6">
-                  {/* Bottles Section */}
-                  <div className="flex-shrink-0">
-                    {/* Mobile Layout */}
-                    <div className="sm:hidden space-y-2">
-                      {/* Heading at top for mobile */}
-                      <h3 className="text-xl font-bold text-foreground mb-2">Value Pack</h3>
-                      
-                      {/* Large Bottle */}
-                      <div className="flex items-center gap-4">
-                        <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
-                        <div className="text-left">
-                          <p className="text-sm text-accent font-semibold">2 fl oz / 60ml</p>
-                          <p className="text-2xl font-bold text-accent">$114</p>
-                        </div>
-                      </div>
-                      
-                      {/* Plus Sign */}
-                      <div className="text-xl font-bold text-accent text-center py-1">+</div>
-                      
-                      {/* Small Bottle */}
-                      <div className="flex items-center gap-4">
-                        <img src={bottleSmall} alt="Free 0.5oz bottle" className="w-20 h-auto" />
-                        <div className="text-left">
-                          <p className="text-sm text-accent font-semibold">0.5 fl oz / 15ml</p>
-                          <p className="text-base font-bold text-accent">FREE</p>
-                        </div>
-                      </div>
-                      
-                      {/* Total info */}
-                      <div className="space-y-1 mt-3 pt-3 border-t border-accent/20">
-                        <p className="text-sm text-accent/90 font-semibold">Total: 2.5 fl oz / 75ml</p>
-                        <p className="text-sm text-muted-foreground">FREE Shipping (US)</p>
-                      </div>
+                {/* Heading on left, then images and text side by side */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                  <h3 className="text-xl font-bold text-foreground sm:w-40 sm:flex-shrink-0">Value Pack</h3>
+                  
+                  <div className="flex items-center gap-4 sm:gap-6 flex-1">
+                    {/* Bottles display - horizontally on all screens */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
+                      <span className="text-accent font-bold text-2xl">+</span>
+                      <img src={bottleSmall} alt="0.5oz bottle" className="w-16 h-auto" />
                     </div>
                     
-                    {/* Desktop Layout */}
-                    <div className="hidden sm:flex items-center justify-center gap-2">
-                      <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
-                      <div className="text-2xl font-bold text-accent">+</div>
-                      <img src={bottleSmall} alt="Free 0.5oz bottle" className="w-14 h-auto" />
+                    {/* Text content */}
+                    <div className="flex-1">
+                      <p className="text-accent font-semibold">2 fl oz (60ml)</p>
+                      <p className="text-accent font-semibold">+ FREE 0.5oz Bottle</p>
+                      <p className="text-sm text-muted-foreground">(2.5 fl oz total)</p>
+                      <p className="text-2xl font-bold text-accent mt-2">
+                        {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
+                      </p>
+                      <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                     </div>
-                  </div>
-                  
-                  {/* Text Section - Desktop only */}
-                  <div className="hidden sm:block flex-1">
-                    <h3 className="text-xl font-bold text-foreground mb-1">Value Pack</h3>
-                    <p className="text-accent font-semibold">2 fl oz (60ml)</p>
-                    <p className="text-lg text-accent font-semibold">+ FREE 0.5oz Bottle</p>
-                    <p className="text-sm text-accent/80 font-semibold">(2.5 fl oz total)</p>
-                    <p className="text-2xl font-bold text-accent mt-2">
-                      {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceLarge}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">+ FREE Shipping (US Only)</p>
                   </div>
                 </div>
               </div>
