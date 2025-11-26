@@ -351,11 +351,11 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                {/* Heading on left, then image and text side by side */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                  <h3 className="text-xl font-bold text-foreground sm:w-40 sm:flex-shrink-0">Starter Size</h3>
+                {/* Heading above, then image and text side by side */}
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-xl font-bold text-foreground">Starter Size</h3>
                   
-                  <div className="flex items-center gap-4 sm:gap-6 flex-1">
+                  <div className="flex items-center gap-4 sm:gap-6">
                     <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
@@ -383,13 +383,13 @@ const Checkout = () => {
                   BEST VALUE
                 </div>
                 
-                {/* Heading on left, then images and text side by side */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                  <h3 className="text-xl font-bold text-foreground sm:w-40 sm:flex-shrink-0">Value Pack</h3>
+                {/* Heading above, then images and text side by side */}
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-xl font-bold text-foreground">Value Pack</h3>
                   
-                  <div className="flex items-center gap-4 sm:gap-6 flex-1">
-                    {/* Bottles display - horizontally on all screens */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                    {/* Bottles display - vertical on mobile, horizontal on desktop */}
+                    <div className="flex flex-col sm:flex-row items-center gap-2 flex-shrink-0">
                       <img src={bottleLarge} alt="2oz bottle" className="w-20 h-auto" />
                       <span className="text-accent font-bold text-2xl">+</span>
                       <img src={bottleSmall} alt="0.5oz bottle" className="w-16 h-auto" />
