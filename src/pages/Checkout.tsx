@@ -351,17 +351,14 @@ const Checkout = () => {
                   : "border-border/50 hover:border-accent/50"
                   }`}
               >
-                {/* Mobile: heading on top, Desktop: side by side */}
-                <div className="space-y-4 sm:space-y-0">
-                  {/* Mobile heading */}
-                  <h3 className="text-xl font-bold text-foreground sm:hidden">Starter Size</h3>
+                {/* Heading on top for both mobile and desktop */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-foreground">Starter Size</h3>
                   
-                  {/* Content section */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                    <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto sm:flex-shrink-0" />
+                  {/* Content: image and text side by side */}
+                  <div className="flex items-start gap-4 sm:gap-6 sm:pl-12">
+                    <img src={bottleSmall} alt="0.5oz bottle" className="w-20 h-auto flex-shrink-0" />
                     <div className="flex-1">
-                      {/* Desktop heading */}
-                      <h3 className="hidden sm:block text-xl font-bold text-foreground mb-1">Starter Size</h3>
                       <p className="text-accent font-semibold">0.5 fl oz (15ml)</p>
                       <p className="text-2xl font-bold text-accent mt-2">
                         {pricesLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : `$${priceSmall}`}
